@@ -7,7 +7,27 @@
 </head>
 <body>
 
-<header>
+<!-- ============================
+     LOGIN
+============================ -->
+<section id="login-view">
+    <h2>Iniciar Sesión</h2>
+
+    <form id="login-form">
+        <input type="text" id="login-user" placeholder="Usuario">
+        <input type="password" id="login-pass" placeholder="Contraseña">
+        <button type="submit">Ingresar</button>
+    </form>
+
+    <p id="login-error" class="error-msg">Usuario o contraseña incorrectos</p>
+</section>
+
+
+
+<!-- ============================
+     HEADER (oculto hasta login)
+============================ -->
+<header style="display:none;">
     <div class="header-left">
         <h1>GastroLab - Cocina Molecular</h1>
     </div>
@@ -19,15 +39,24 @@
             <button data-view="pedidos-view">Pedidos</button>
         </nav>
 
-        <!-- Cierre de sesión -->
         <button id="btn-logout" class="logout-btn">Cerrar sesión</button>
     </div>
 </header>
 
+
+
+<!-- ============================
+     CONTENIDO PRINCIPAL
+============================ -->
 <main>
-    <!-- INVENTARIO -->
-    <section id="inventario-view">
+
+    <!-- ============================
+         INVENTARIO
+    ============================= -->
+    <section id="inventario-view" style="display:none;">
         <h2>Inventario de Insumos</h2>
+        <button class="btn-volver" data-view="menu-view">← Volver al menú</button>
+
         <form id="form-insumo">
             <input type="text" id="insumo-codigo" placeholder="Código del insumo">
             <input type="text" id="insumo-nombre" placeholder="Nombre">
@@ -44,9 +73,15 @@
         <inventory-table></inventory-table>
     </section>
 
-    <!-- PLATILLOS -->
+
+
+    <!-- ============================
+         PLATILLOS
+    ============================= -->
     <section id="platillos-view" style="display:none;">
         <h2>Gestión de Platillos</h2>
+        <button class="btn-volver" data-view="menu-view">← Volver al menú</button>
+
         <form id="form-platillo">
             <input type="text" id="platillo-codigo" placeholder="Código del platillo">
             <input type="text" id="platillo-nombre" placeholder="Nombre">
@@ -63,18 +98,23 @@
             <button type="submit">Guardar platillo</button>
         </form>
 
-        <div id="lista-platillos">
-            <!-- <dish-card> web components -->
-        </div>
+        <div id="lista-platillos"></div>
     </section>
 
-    <!-- PEDIDOS -->
+
+
+    <!-- ============================
+         PEDIDOS
+    ============================= -->
     <section id="pedidos-view" style="display:none;">
         <h2>Gestión de Pedidos</h2>
+        <button class="btn-volver" data-view="menu-view">← Volver al menú</button>
+
         <form id="form-pedido">
             <input type="text" id="pedido-numero" placeholder="Número de pedido">
             <input type="text" id="pedido-cliente" placeholder="Nombre del cliente">
             <input type="tel" id="pedido-telefono" placeholder="Teléfono">
+
             <select id="pedido-estado">
                 <option value="pendiente">Pendiente</option>
                 <option value="en preparación">En preparación</option>
@@ -105,15 +145,27 @@
             <tbody></tbody>
         </table>
     </section>
+
 </main>
 
+
+
+<!-- ============================
+     FOOTER
+============================ -->
 <footer>
     <p>Proyecto GastroLab - Cocina Molecular</p>
 </footer>
 
+
+
+<!-- ============================
+     SCRIPTS
+============================ -->
 <script src="components/inventory-table.js"></script>
 <script src="components/dish-card.js"></script>
 <script src="components/order-summary.js"></script>
 <script src="app.js"></script>
+
 </body>
 </html>
