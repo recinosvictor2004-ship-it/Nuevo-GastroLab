@@ -576,38 +576,36 @@ function actualizarTablaPedidos() {
 
 
 // ===============================
-//  EDITAR / ELIMINAR PLATILLOS (CORREGIDO)
+//  EVENTOS EDITAR / ELIMINAR INSUMOS (CORREGIDO)
 // ===============================
 
 document.addEventListener("click", (e) => {
 
-    // ELIMINAR PLATILLO
-    if (e.target.classList.contains("delete-platillo")) {
+    // ELIMINAR INSUMO
+    if (e.target.classList.contains("delete-btn")) {
         const id = e.target.getAttribute("data-id");
-        let platillos = getPlatillos().filter(p => p.codigo !== id);
-        savePlatillos(platillos);
-        actualizarListaPlatillos();
-    }
-
-    // EDITAR PLATILLO
-    if (e.target.classList.contains("edit-platillo")) {
-        const id = e.target.getAttribute("data-id");
-        const p = getPlatillos().find(p => p.codigo === id);
-
-        document.getElementById("platillo-codigo").value = p.codigo;
-        document.getElementById("platillo-nombre").value = p.nombre;
-        document.getElementById("platillo-descripcion").value = p.descripcion;
-        document.getElementById("platillo-imagen").value = p.imagen;
-        document.getElementById("platillo-valor").value = p.valor;
-
-        ingredientesTemp = [...p.ingredientes];
-
-        platilloEditando = id;
-
-        showView("platillos-view");
+        let insumos = getInsumos().filter(i => i.codigo !== id);
+        saveInsumos(insumos);
+        actualizarTablaInsumos();
         cargarInsumosEnSelect();
     }
+
+    // EDITAR INSUMO
+    if (e.target.classList.contains("edit-btn")) {
+        const id = e.target.getAttribute("data-id");
+        const insumo = getInsumos().find(i => i.codigo === id);
+        if (!insumo) return;
+
+        document.getElementById("insumo-codigo").value = insumo.codigo;
+        document.getElementById("insumo-nombre").value = insumo.nombre;
+        document.getElementById("insumo-descripcion").value = insumo.descripcion;
+        document.getElementById("insumo-cantidad").value = insumo.cantidad;
+        document.getElementById("insumo-unidad").value = insumo.unidad;
+
+        insumoEditando = id;
+    }
 });
+
 
 
 
