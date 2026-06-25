@@ -22,6 +22,15 @@ function showView(viewId) {
 navButtons.forEach(btn => {
     btn.addEventListener("click", () => {
         const view = btn.getAttribute("data-view");
+
+        // FIX: actualizar selects al entrar a cada vista
+        if (view === "platillos-view") {
+            cargarInsumosEnSelect();
+        }
+        if (view === "pedidos-view") {
+            cargarPlatillosEnSelect();
+        }
+
         showView(view);
     });
 });
@@ -162,25 +171,27 @@ if (formInsumo) {
 
         saveInsumos(insumos);
         actualizarTablaInsumos();
+        cargarInsumosEnSelect(); // FIX: actualizar select de ingredientes
         formInsumo.reset();
     });
 }
 
 
 // ===============================
-//  EVENTOS EDITAR / ELIMINAR
+//  EVENTOS EDITAR / ELIMINAR INSUMOS
 // ===============================
 
 document.addEventListener("click", (e) => {
-    // ELIMINAR
+    // ELIMINAR INSUMO
     if (e.target.classList.contains("delete-btn")) {
         const id = e.target.getAttribute("data-id");
         let insumos = getInsumos().filter(i => i.codigo !== id);
         saveInsumos(insumos);
         actualizarTablaInsumos();
+        cargarInsumosEnSelect();
     }
 
-    // EDITAR
+    // EDITAR INSUMO
     if (e.target.classList.contains("edit-btn")) {
         const id = e.target.getAttribute("data-id");
         const insumo = getInsumos().find(i => i.codigo === id);
@@ -196,12 +207,8 @@ document.addEventListener("click", (e) => {
     }
 });
 
-
-// ===============================
-//  INICIALIZAR TABLA
-// ===============================
-
 actualizarTablaInsumos();
+
 
 // ===============================
 //  LOCALSTORAGE - PLATILLOS
@@ -228,6 +235,11 @@ function actualizarListaPlatillos() {
     });
 }
 
+
+// ===============================
+//  CARGAR INSUMOS EN SELECT (CORREGIDO)
+// ===============================
+
 function cargarInsumosEnSelect() {
     const select = document.getElementById("ingrediente-insumo");
     if (!select) return;
@@ -243,7 +255,12 @@ function cargarInsumosEnSelect() {
     });
 }
 
-let ingredientesTemp = []; // ingredientes antes de guardar el platillo
+
+// ===============================
+//  AGREGAR INGREDIENTES A PLATILLO
+// ===============================
+
+let ingredientesTemp = [];
 
 document.getElementById("btn-agregar-ingrediente").addEventListener("click", () => {
     const insumo = document.getElementById("ingrediente-insumo").value;
@@ -259,6 +276,11 @@ document.getElementById("btn-agregar-ingrediente").addEventListener("click", () 
     alert("Ingrediente agregado");
     document.getElementById("ingrediente-cantidad").value = "";
 });
+
+
+// ===============================
+//  CRUD PLATILLOS
+// ===============================
 
 let platilloEditando = null;
 
@@ -309,6 +331,11 @@ formPlatillo.addEventListener("submit", (e) => {
     ingredientesTemp = [];
 });
 
+
+// ===============================
+//  EDITAR / ELIMINAR PLATILLOS
+// ===============================
+
 document.addEventListener("click", (e) => {
 
     // ELIMINAR
@@ -335,11 +362,13 @@ document.addEventListener("click", (e) => {
         platilloEditando = id;
 
         showView("platillos-view");
+        cargarInsumosEnSelect();
     }
 });
 
 cargarInsumosEnSelect();
 actualizarListaPlatillos();
+
 
 // ===============================
 //  LOCALSTORAGE - PEDIDOS
@@ -359,7 +388,7 @@ function savePedidos(lista) {
 // ===============================
 
 let pedidoEditando = null;
-let listaPedidoTemp = []; // platillos agregados al pedido
+let listaPedidoTemp = [];
 
 
 // ===============================
@@ -576,6 +605,7 @@ document.addEventListener("click", (e) => {
         pedidoEditando = id;
 
         showView("pedidos-view");
+        cargarPlatillosEnSelect();
     }
 });
 
@@ -584,5 +614,5 @@ document.addEventListener("click", (e) => {
 //  INICIALIZAR
 // ===============================
 
-cargarPlatillosEnSelect();
-actualizarTablaPedidos();
+cargarInsumosEnSelect();
+cargarPlatillos
