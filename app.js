@@ -227,3 +227,18 @@ function actualizarListaPlatillos() {
         contenedor.appendChild(card);
     });
 }
+
+function cargarInsumosEnSelect() {
+    const select = document.getElementById("ingrediente-insumo");
+    if (!select) return;
+
+    const insumos = getInsumos();
+    select.innerHTML = "";
+
+    insumos.forEach(i => {
+        const option = document.createElement("option");
+        option.value = i.codigo;
+        option.textContent = `${i.nombre} (${i.unidad})`;
+        select.appendChild(option);
+    });
+}
