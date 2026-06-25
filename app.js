@@ -242,3 +242,20 @@ function cargarInsumosEnSelect() {
         select.appendChild(option);
     });
 }
+
+let ingredientesTemp = []; // ingredientes antes de guardar el platillo
+
+document.getElementById("btn-agregar-ingrediente").addEventListener("click", () => {
+    const insumo = document.getElementById("ingrediente-insumo").value;
+    const cantidad = parseFloat(document.getElementById("ingrediente-cantidad").value);
+
+    if (!insumo || isNaN(cantidad) || cantidad <= 0) {
+        alert("Debe seleccionar un insumo y una cantidad válida");
+        return;
+    }
+
+    ingredientesTemp.push({ insumo, cantidad });
+
+    alert("Ingrediente agregado");
+    document.getElementById("ingrediente-cantidad").value = "";
+});
