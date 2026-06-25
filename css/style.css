@@ -218,3 +218,69 @@ body {
     margin-bottom: 4px;
     color: #ccc;
 }
+.pedido-section h2,
+.pedido-resumen h2 {
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+}
+
+.pedido-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(220px, 1fr));
+    gap: 20px;
+}
+
+.pedido-card {
+    background: #1a1a1a;
+    padding: 20px;
+    border-radius: 12px;
+    border: 1px solid #333;
+}
+
+.pedido-card h3 {
+    margin-bottom: 6px;
+}
+
+.pedido-card p {
+    font-size: 13px;
+    color: #ccc;
+    margin-bottom: 10px;
+}
+
+.pedido-card input {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 12px;
+    border-radius: 6px;
+    border: none;
+    background: #222;
+    color: #fff;
+}
+
+.pedido-resumen {
+    margin-top: 40px;
+    background: #1a1a1a;
+    padding: 20px;
+    border-radius: 12px;
+    border: 1px solid #333;
+}
+
+.pedido-lista {
+    margin-bottom: 20px;
+}
+
+.pedido-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 6px 0;
+    border-bottom: 1px solid #333;
+}
+
+.pedido-total {
+    margin-bottom: 20px;
+}
+
+.pedido-confirmar {
+    width: 100%;
+}
