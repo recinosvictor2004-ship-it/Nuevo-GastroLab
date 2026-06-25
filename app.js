@@ -333,21 +333,21 @@ formPlatillo.addEventListener("submit", (e) => {
 
 
 // ===============================
-//  EDITAR / ELIMINAR PLATILLOS
+//  EDITAR / ELIMINAR PLATILLOS (CORREGIDO)
 // ===============================
 
 document.addEventListener("click", (e) => {
 
-    // ELIMINAR
-    if (e.target.classList.contains("delete-btn")) {
+    // ELIMINAR PLATILLO
+    if (e.target.classList.contains("delete-platillo")) {
         const id = e.target.getAttribute("data-id");
         let platillos = getPlatillos().filter(p => p.codigo !== id);
         savePlatillos(platillos);
         actualizarListaPlatillos();
     }
 
-    // EDITAR
-    if (e.target.classList.contains("edit-btn")) {
+    // EDITAR PLATILLO
+    if (e.target.classList.contains("edit-platillo")) {
         const id = e.target.getAttribute("data-id");
         const p = getPlatillos().find(p => p.codigo === id);
 
@@ -366,8 +366,6 @@ document.addEventListener("click", (e) => {
     }
 });
 
-cargarInsumosEnSelect();
-actualizarListaPlatillos();
 
 
 // ===============================
