@@ -340,3 +340,249 @@ document.addEventListener("click", (e) => {
 
 cargarInsumosEnSelect();
 actualizarListaPlatillos();
+
+// ===============================
+//  LOCALSTORAGE - PEDIDOS
+// ===============================
+
+function getPedidos() {
+    return JSON.parse(localStorage.getItem("pedidos")) || [];
+}
+
+function savePedidos(lista) {
+    localStorage.setItem("pedidos", JSON.stringify(lista));
+}
+
+
+// ===============================
+//  VARIABLES TEMPORALES DEL PEDIDO
+// ===============================
+
+let pedidoEditando = null;
+let listaPedidoTemp = []; // platillos agregados al pedido
+
+
+// ===============================
+//  CARGAR PLATILLOS EN SELECT
+// ===============================
+
+function cargarPlatillosEnSelect() {
+    const select = document.getElementById("pedido-platillo-select");
+    if (!select) return;
+
+    const platillos = getPlatillos();
+    select.innerHTML = "";
+
+    platillos.forEach(p => {
+        const option = document.createElement("option");
+        option.value = p.codigo;
+        option.textContent = `${p.nombre} (Q${p.valor})`;
+        select.appendChild(option);
+    });
+}
+
+
+// ===============================
+//  AGREGAR PLATILLO AL PEDIDO
+// ===============================
+
+document.getElementById("btn-agregar-platillo-pedido").addEventListener("click", () => {
+    const codigo = document.getElementById("pedido-platillo-select").value;
+    const cantidad = parseInt(document.getElementById("pedido-platillo-cantidad").value);
+
+    if (!codigo || isNaN(cantidad) || cantidad <= 0) {
+        alert("Debe seleccionar un platillo y una cantidad válida");
+        return;
+    }
+
+    const platillo = getPlatillos().find(p => p.codigo === codigo);
+
+    listaPedidoTemp.push({
+        codigo: platillo.codigo,
+        nombre: platillo.nombre,
+        precio: platillo.valor,
+        cantidad
+    });
+
+    document.querySelector("order-summary").data = listaPedidoTemp;
+
+    document.getElementById("pedido-platillo-cantidad").value = "";
+});
+
+
+// ===============================
+//  VALIDAR INVENTARIO ANTES DE GUARDAR
+// ===============================
+
+function validarInventarioParaPedido() {
+    const insumos = getInsumos();
+    const platillos = getPlatillos();
+
+    for (let item of listaPedidoTemp) {
+        const platillo = platillos.find(p => p.codigo === item.codigo);
+
+        for (let ing of platillo.ingredientes) {
+            const insumo = insumos.find(i => i.codigo === ing.insumo);
+            const requerido = ing.cantidad * item.cantidad;
+
+            if (insumo.cantidad < requerido) {
+                return `No hay suficiente ${insumo.nombre}. Se requiere ${requerido} ${insumo.unidad}`;
+            }
+        }
+    }
+
+    return null;
+}
+
+
+// ===============================
+//  DESCONTAR INVENTARIO AL GUARDAR PEDIDO
+// ===============================
+
+function descontarInventario() {
+    let insumos = getInsumos();
+    const platillos = getPlatillos();
+
+    listaPedidoTemp.forEach(item => {
+        const platillo = platillos.find(p => p.codigo === item.codigo);
+
+        platillo.ingredientes.forEach(ing => {
+            const insumo = insumos.find(i => i.codigo === ing.insumo);
+            insumo.cantidad -= ing.cantidad * item.cantidad;
+        });
+    });
+
+    saveInsumos(insumos);
+    actualizarTablaInsumos();
+}
+
+
+// ===============================
+//  GUARDAR PEDIDO (CREAR / EDITAR)
+// ===============================
+
+const formPedido = document.getElementById("form-pedido");
+
+formPedido.addEventListener("submit", (e) => {
+    e.preventDefault();
+
+    const numero = document.getElementById("pedido-numero").value.trim();
+    const cliente = document.getElementById("pedido-cliente").value.trim();
+    const telefono = document.getElementById("pedido-telefono").value.trim();
+    const estado = document.getElementById("pedido-estado").value;
+
+    if (!numero || !cliente) {
+        alert("Número de pedido y cliente son obligatorios");
+        return;
+    }
+
+    let pedidos = getPedidos();
+
+    // Validar inventario
+    const errorInv = validarInventarioParaPedido();
+    if (errorInv) {
+        alert(errorInv);
+        return;
+    }
+
+    // EDITAR
+    if (pedidoEditando) {
+        const index = pedidos.findIndex(p => p.numero === pedidoEditando);
+        pedidos[index] = { numero, cliente, telefono, estado, items: listaPedidoTemp };
+        pedidoEditando = null;
+    }
+    // CREAR
+    else {
+        if (pedidos.some(p => p.numero === numero)) {
+            alert("Ya existe un pedido con ese número");
+            return;
+        }
+
+        pedidos.push({
+            numero,
+            cliente,
+            telefono,
+            estado,
+            items: listaPedidoTemp
+        });
+    }
+
+    savePedidos(pedidos);
+    descontarInventario();
+    actualizarTablaPedidos();
+
+    formPedido.reset();
+    listaPedidoTemp = [];
+    document.querySelector("order-summary").data = [];
+});
+
+
+// ===============================
+//  RENDER TABLA DE PEDIDOS
+// ===============================
+
+function actualizarTablaPedidos() {
+    const tbody = document.querySelector("#tabla-pedidos tbody");
+    const pedidos = getPedidos();
+
+    tbody.innerHTML = "";
+
+    pedidos.forEach(p => {
+        const total = p.items.reduce((acc, item) => acc + item.precio * item.cantidad, 0);
+
+        tbody.innerHTML += `
+            <tr>
+                <td>${p.numero}</td>
+                <td>${p.cliente}</td>
+                <td>${p.estado}</td>
+                <td>Q${total}</td>
+                <td>
+                    <button class="edit-pedido" data-id="${p.numero}">Editar</button>
+                    <button class="delete-pedido" data-id="${p.numero}">Eliminar</button>
+                </td>
+            </tr>
+        `;
+    });
+}
+
+
+// ===============================
+//  EDITAR / ELIMINAR PEDIDOS
+// ===============================
+
+document.addEventListener("click", (e) => {
+
+    // ELIMINAR
+    if (e.target.classList.contains("delete-pedido")) {
+        const id = e.target.getAttribute("data-id");
+        let pedidos = getPedidos().filter(p => p.numero !== id);
+        savePedidos(pedidos);
+        actualizarTablaPedidos();
+    }
+
+    // EDITAR
+    if (e.target.classList.contains("edit-pedido")) {
+        const id = e.target.getAttribute("data-id");
+        const p = getPedidos().find(p => p.numero === id);
+
+        document.getElementById("pedido-numero").value = p.numero;
+        document.getElementById("pedido-cliente").value = p.cliente;
+        document.getElementById("pedido-telefono").value = p.telefono;
+        document.getElementById("pedido-estado").value = p.estado;
+
+        listaPedidoTemp = [...p.items];
+        document.querySelector("order-summary").data = listaPedidoTemp;
+
+        pedidoEditando = id;
+
+        showView("pedidos-view");
+    }
+});
+
+
+// ===============================
+//  INICIALIZAR
+// ===============================
+
+cargarPlatillosEnSelect();
+actualizarTablaPedidos();
