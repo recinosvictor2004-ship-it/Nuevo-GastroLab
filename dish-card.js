@@ -48,8 +48,8 @@ class DishCard extends HTMLElement {
                 <p>${p.descripcion}</p>
                 <p><strong>Precio:</strong> Q${p.valor}</p>
 
-                <button data-id="${p.codigo}" class="edit-btn">Editar</button>
-                <button data-id="${p.codigo}" class="delete-btn" style="background:#ff4d4d;">Eliminar</button>
+                <button data-id="${p.codigo}" class="edit-platillo">Editar</button>
+                <button data-id="${p.codigo}" class="delete-platillo" style="background:#ff4d4d;">Eliminar</button>
             </div>
         `;
     }
