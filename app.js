@@ -576,38 +576,40 @@ function actualizarTablaPedidos() {
 
 
 // ===============================
-//  EDITAR / ELIMINAR PEDIDOS
+//  EDITAR / ELIMINAR PLATILLOS (CORREGIDO)
 // ===============================
 
 document.addEventListener("click", (e) => {
 
-    // ELIMINAR
-    if (e.target.classList.contains("delete-pedido")) {
+    // ELIMINAR PLATILLO
+    if (e.target.classList.contains("delete-platillo")) {
         const id = e.target.getAttribute("data-id");
-        let pedidos = getPedidos().filter(p => p.numero !== id);
-        savePedidos(pedidos);
-        actualizarTablaPedidos();
+        let platillos = getPlatillos().filter(p => p.codigo !== id);
+        savePlatillos(platillos);
+        actualizarListaPlatillos();
     }
 
-    // EDITAR
-    if (e.target.classList.contains("edit-pedido")) {
+    // EDITAR PLATILLO
+    if (e.target.classList.contains("edit-platillo")) {
         const id = e.target.getAttribute("data-id");
-        const p = getPedidos().find(p => p.numero === id);
+        const p = getPlatillos().find(p => p.codigo === id);
 
-        document.getElementById("pedido-numero").value = p.numero;
-        document.getElementById("pedido-cliente").value = p.cliente;
-        document.getElementById("pedido-telefono").value = p.telefono;
-        document.getElementById("pedido-estado").value = p.estado;
+        document.getElementById("platillo-codigo").value = p.codigo;
+        document.getElementById("platillo-nombre").value = p.nombre;
+        document.getElementById("platillo-descripcion").value = p.descripcion;
+        document.getElementById("platillo-imagen").value = p.imagen;
+        document.getElementById("platillo-valor").value = p.valor;
 
-        listaPedidoTemp = [...p.items];
-        document.querySelector("order-summary").data = listaPedidoTemp;
+        ingredientesTemp = [...p.ingredientes];
 
-        pedidoEditando = id;
+        platilloEditando = id;
 
-        showView("pedidos-view");
-        cargarPlatillosEnSelect();
+        showView("platillos-view");
+        cargarInsumosEnSelect();
     }
 });
+
+
 
 
 // ===============================
