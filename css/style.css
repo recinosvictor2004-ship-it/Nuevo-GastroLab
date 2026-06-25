@@ -176,3 +176,40 @@ body {
 .menu-card:hover {
     border-color: #ffb347;
 }
+.menu-img {
+    width: 100%;
+    height: 140px;
+    object-fit: cover;
+    border-radius: 10px;
+    margin-bottom: 10px;
+}
+
+.menu-card small {
+    display: block;
+    margin-top: 6px;
+    font-size: 11px;
+    color: #bbb;
+}
+
+.menu-actions {
+    margin-top: 12px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.btn-danger {
+    padding: 10px 20px;
+    border-radius: 30px;
+    border: 1px solid #b33;
+    background: transparent;
+    color: #b33;
+    text-transform: uppercase;
+    font-size: 12px;
+    letter-spacing: 2px;
+    cursor: pointer;
+}
+
+.btn-danger:hover {
+    background: #b33;
+    color: #111;
+}
