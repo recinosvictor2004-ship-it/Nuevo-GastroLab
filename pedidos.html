@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Pedidos</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <div class="menu-container">
+
+        <!-- ENCABEZADO -->
+        <header class="menu-header">
+            <h1>Pedidos</h1>
+            <a href="menu.html" class="btn-primary">Volver</a>
+        </header>
+
+        <!-- SECCIÓN DE SELECCIÓN DE PLATILLOS -->
+        <section class="pedido-section">
+            <h2>Seleccionar Platillos</h2>
+
+            <div class="pedido-grid">
+
+                <!-- 1 -->
+                <div class="pedido-card">
+                    <h3>Esferas de Caprese</h3>
+                    <p>Mozzarella esferificada con tomate y albahaca.</p>
+
+                    <label>Cantidad</label>
+                    <input type="number" min="0" placeholder="0">
+
+                    <button class="btn-primary">Agregar</button>
+                </div>
+
+                <!-- 2 -->
+                <div class="pedido-card">
+                    <h3>Risotto de Trufa Negra</h3>
+                    <p>Arroz arborio cremoso con trufa.</p>
+
+                    <label>Cantidad</label>
+                    <input type="number" min="0" placeholder="0">
+
+                    <button class="btn-primary">Agregar</button>
+                </div>
+
+                <!-- 3 -->
+                <div class="pedido-card">
+                    <h3>Salmón en Costra</h3>
+                    <p>Filete sellado con costra de hierbas.</p>
+
+                    <label>Cantidad</label>
+                    <input type="number" min="0" placeholder="0">
+
+                    <button class="btn-primary">Agregar</button>
+                </div>
+
+                <!-- 4 -->
+                <div class="pedido-card">
+                    <h3>Ravioles de Espinaca</h3>
+                    <p>Pasta fresca rellena con ricotta.</p>
+
+                    <label>Cantidad</label>
+                    <input type="number" min="0" placeholder="0">
+
+                    <button class="btn-primary">Agregar</button>
+                </div>
+
+                <!-- 5 -->
+                <div class="pedido-card">
+                    <h3>Pollo al Limón</h3>
+                    <p>Pechuga marinada en limón y romero.</p>
+
+                    <label>Cantidad</label>
+                    <input type="number" min="0" placeholder="0">
+
+                    <button class="btn-primary">Agregar</button>
+                </div>
+
+                <!-- 6 -->
+                <div class="pedido-card">
+                    <h3>Tacos de Pulpo</h3>
+                    <p>Pulpo tierno con chipotle.</p>
+
+                    <label>Cantidad</label>
+                    <input type="number" min="0" placeholder="0">
+
+                    <button class="btn-primary">Agregar</button>
+                </div>
+
+                <!-- 7 -->
+                <div class="pedido-card">
+                    <h3>Filete con Reducción</h3>
+                    <p>Corte premium con vino tinto.</p>
+
+                    <label>Cantidad</label>
+                    <input type="number" min="0" placeholder="0">
+
+                    <button class="btn-primary">Agregar</button>
+                </div>
+
+                <!-- 8 -->
+                <div class="pedido-card">
+                    <h3>Pasta Alfredo</h3>
+                    <p>Fettuccine con camarones.</p>
+
+                    <label>Cantidad</label>
+                    <input type="number" min="0" placeholder="0">
+
+                    <button class="btn-primary">Agregar</button>
+                </div>
+
+                <!-- 9 -->
+                <div class="pedido-card">
+                    <h3>Cheesecake</h3>
+                    <p>Cheesecake con frutos rojos.</p>
+
+                    <label>Cantidad</label>
+                    <input type="number" min="0" placeholder="0">
+
+                    <button class="btn-primary">Agregar</button>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- SECCIÓN DEL RESUMEN DEL PEDIDO -->
+        <section class="pedido-resumen">
+            <h2>Resumen del Pedido</h2>
+
+            <div class="pedido-lista">
+                <!-- Aquí se mostrarán los platillos agregados (maquetación estática) -->
+                <div class="pedido-item">
+                    <span>Esferas de Caprese (2)</span>
+                    <span>Q 90.00</span>
+                </div>
+
+                <div class="pedido-item">
+                    <span>Risotto de Trufa (1)</span>
+                    <span>Q 60.00</span>
+                </div>
+            </div>
+
+            <div class="pedido-total">
+                <h3>Total: Q 150.00</h3>
+            </div>
+
+            <button class="btn-primary pedido-confirmar">Confirmar Pedido</button>
+        </section>
+
+    </div>
+
+</body>
+</html>
