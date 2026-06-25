@@ -308,3 +308,32 @@ formPlatillo.addEventListener("submit", (e) => {
     formPlatillo.reset();
     ingredientesTemp = [];
 });
+
+document.addEventListener("click", (e) => {
+
+    // ELIMINAR
+    if (e.target.classList.contains("delete-btn")) {
+        const id = e.target.getAttribute("data-id");
+        let platillos = getPlatillos().filter(p => p.codigo !== id);
+        savePlatillos(platillos);
+        actualizarListaPlatillos();
+    }
+
+    // EDITAR
+    if (e.target.classList.contains("edit-btn")) {
+        const id = e.target.getAttribute("data-id");
+        const p = getPlatillos().find(p => p.codigo === id);
+
+        document.getElementById("platillo-codigo").value = p.codigo;
+        document.getElementById("platillo-nombre").value = p.nombre;
+        document.getElementById("platillo-descripcion").value = p.descripcion;
+        document.getElementById("platillo-imagen").value = p.imagen;
+        document.getElementById("platillo-valor").value = p.valor;
+
+        ingredientesTemp = [...p.ingredientes];
+
+        platilloEditando = id;
+
+        showView("platillos-view");
+    }
+});
