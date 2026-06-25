@@ -202,3 +202,15 @@ document.addEventListener("click", (e) => {
 // ===============================
 
 actualizarTablaInsumos();
+
+// ===============================
+//  LOCALSTORAGE - PLATILLOS
+// ===============================
+
+function getPlatillos() {
+    return JSON.parse(localStorage.getItem("platillos")) || [];
+}
+
+function savePlatillos(lista) {
+    localStorage.setItem("platillos", JSON.stringify(lista));
+}
