@@ -214,3 +214,16 @@ function getPlatillos() {
 function savePlatillos(lista) {
     localStorage.setItem("platillos", JSON.stringify(lista));
 }
+
+function actualizarListaPlatillos() {
+    const contenedor = document.getElementById("lista-platillos");
+    const platillos = getPlatillos();
+
+    contenedor.innerHTML = "";
+
+    platillos.forEach(p => {
+        const card = document.createElement("dish-card");
+        card.data = p;
+        contenedor.appendChild(card);
+    });
+}
