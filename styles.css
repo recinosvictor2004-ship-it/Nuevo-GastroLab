@@ -1,0 +1,273 @@
+/* ============================
+   RESET BÁSICO
+============================ */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: "Segoe UI", system-ui, sans-serif;
+    background: #050814;
+    color: #e6e6e6;
+}
+
+/* ============================
+   LAYOUT GENERAL
+============================ */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 24px;
+    background: #070d1f;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+
+.header-left h1 {
+    font-size: 22px;
+    color: #4db8ff;
+    letter-spacing: 1px;
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+nav {
+    display: flex;
+    gap: 8px;
+}
+
+nav button {
+    padding: 8px 14px;
+    border-radius: 8px;
+    border: 1px solid #1e3a66;
+    background: #0d1b33;
+    color: #e6e6e6;
+    cursor: pointer;
+    font-size: 14px;
+    transition: 0.2s;
+}
+
+nav button:hover {
+    background: #1a2f55;
+}
+
+.logout-btn {
+    background: #ff4d4d;
+    border: none;
+    padding: 8px 14px;
+    border-radius: 8px;
+    color: white;
+    cursor: pointer;
+    font-size: 14px;
+    transition: 0.2s;
+}
+
+.logout-btn:hover {
+    background: #ff6666;
+}
+
+main {
+    max-width: 1000px;
+    margin: 24px auto;
+    padding: 0 16px 40px;
+}
+
+section {
+    margin-bottom: 32px;
+    padding: 24px;
+    background: rgba(255,255,255,0.03);
+    border-radius: 12px;
+    border: 1px solid rgba(255,255,255,0.08);
+    backdrop-filter: blur(6px);
+}
+
+h2 {
+    margin-bottom: 16px;
+    color: #4db8ff;
+}
+
+/* ============================
+   FORMULARIOS
+============================ */
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+input,
+select,
+textarea {
+    padding: 10px 12px;
+    border-radius: 8px;
+    border: 1px solid rgba(255,255,255,0.15);
+    background: rgba(255,255,255,0.05);
+    color: #e6e6e6;
+    font-size: 14px;
+}
+
+input::placeholder,
+textarea::placeholder {
+    color: #9aa8c2;
+}
+
+textarea {
+    min-height: 80px;
+    resize: vertical;
+}
+
+button[type="submit"],
+#btn-agregar-ingrediente,
+#btn-agregar-platillo-pedido {
+    padding: 10px 14px;
+    border-radius: 8px;
+    border: none;
+    background: #0077ff;
+    color: white;
+    font-size: 14px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+button[type="submit"]:hover,
+#btn-agregar-ingrediente:hover,
+#btn-agregar-platillo-pedido:hover {
+    background: #3399ff;
+}
+
+/* Agrupadores de ingredientes / platillos en pedido */
+#ingredientes-platillo,
+#pedido-platillos {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+}
+
+/* ============================
+   TABLAS
+============================ */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+    font-size: 14px;
+}
+
+thead {
+    background: rgba(0, 119, 255, 0.18);
+}
+
+th,
+td {
+    padding: 10px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    text-align: left;
+}
+
+tbody tr:hover {
+    background: rgba(255,255,255,0.04);
+}
+
+/* ============================
+   LISTA DE PLATILLOS
+============================ */
+#lista-platillos {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 16px;
+}
+
+dish-card,
+.platillo-card {
+    display: block;
+    padding: 16px;
+    background: rgba(255,255,255,0.05);
+    border-radius: 10px;
+    border: 1px solid rgba(255,255,255,0.1);
+}
+
+/* ============================
+   RESUMEN DE PEDIDO (order-summary)
+============================ */
+order-summary {
+    display: block;
+    margin-top: 16px;
+    padding: 16px;
+    background: rgba(0, 119, 255, 0.08);
+    border-radius: 10px;
+    border: 1px solid rgba(0, 119, 255, 0.4);
+}
+
+/* ============================
+   FOOTER
+============================ */
+footer {
+    text-align: center;
+    padding: 16px;
+    font-size: 13px;
+    color: #9aa8c2;
+    border-top: 1px solid rgba(255,255,255,0.08);
+    background: #070d1f;
+}
+
+/* ============================
+   RESPONSIVE
+============================ */
+@media (max-width: 768px) {
+    header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
+
+    .header-right {
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    nav {
+        flex-wrap: wrap;
+    }
+
+    section {
+        padding: 18px;
+    }
+
+    #ingredientes-platillo,
+    #pedido-platillos {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    table {
+        font-size: 13px;
+    }
+}
+
+@media (max-width: 480px) {
+    header {
+        padding: 12px 16px;
+    }
+
+    .header-left h1 {
+        font-size: 18px;
+    }
+
+    nav button,
+    .logout-btn {
+        font-size: 13px;
+        padding: 7px 10px;
+    }
+
+    main {
+        padding: 0 10px 30px;
+    }
+}
