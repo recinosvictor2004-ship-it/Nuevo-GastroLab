@@ -1,20 +1,73 @@
 /* ============================
-   RESET BÁSICO
+   RESET
 ============================ */
 * {
-    box-sizing: border-box;
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
 }
 
 body {
-    font-family: "Segoe UI", system-ui, sans-serif;
+    font-family: "Segoe UI", sans-serif;
     background: #050814;
     color: #e6e6e6;
+    line-height: 1.4;
 }
 
 /* ============================
-   LAYOUT GENERAL
+   LOGIN
+============================ */
+#login-view {
+    max-width: 400px;
+    margin: 80px auto;
+    padding: 30px;
+    background: rgba(255,255,255,0.05);
+    border-radius: 12px;
+    border: 1px solid rgba(255,255,255,0.1);
+    text-align: center;
+}
+
+#login-view h2 {
+    color: #4db8ff;
+    margin-bottom: 20px;
+}
+
+#login-view form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+#login-view input {
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid rgba(255,255,255,0.15);
+    background: rgba(255,255,255,0.05);
+    color: #e6e6e6;
+}
+
+#login-view button {
+    padding: 12px;
+    border-radius: 8px;
+    background: #0077ff;
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+#login-view button:hover {
+    background: #3399ff;
+}
+
+.error-msg {
+    margin-top: 10px;
+    color: #ff4d4d;
+    display: none;
+}
+
+/* ============================
+   HEADER
 ============================ */
 header {
     display: flex;
@@ -23,23 +76,26 @@ header {
     padding: 16px 24px;
     background: #070d1f;
     border-bottom: 1px solid rgba(255,255,255,0.08);
+    flex-wrap: wrap;
+    gap: 12px;
 }
 
 .header-left h1 {
     font-size: 22px;
     color: #4db8ff;
-    letter-spacing: 1px;
 }
 
 .header-right {
     display: flex;
     align-items: center;
-    gap: 16px;
+    gap: 12px;
+    flex-wrap: wrap;
 }
 
 nav {
     display: flex;
     gap: 8px;
+    flex-wrap: wrap;
 }
 
 nav button {
@@ -72,8 +128,11 @@ nav button:hover {
     background: #ff6666;
 }
 
+/* ============================
+   MAIN
+============================ */
 main {
-    max-width: 1000px;
+    max-width: 1100px;
     margin: 24px auto;
     padding: 0 16px 40px;
 }
@@ -93,62 +152,71 @@ h2 {
 }
 
 /* ============================
+   BOTÓN VOLVER
+============================ */
+.btn-volver {
+    margin-bottom: 16px;
+    padding: 8px 14px;
+    background: #1a2f55;
+    border: 1px solid #4db8ff;
+    color: #e6e6e6;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: 0.2s;
+}
+
+.btn-volver:hover {
+    background: #25426f;
+}
+
+/* ============================
    FORMULARIOS
 ============================ */
 form {
     display: flex;
     flex-direction: column;
     gap: 12px;
-    margin-bottom: 20px;
 }
 
 input,
 select,
 textarea {
-    padding: 10px 12px;
+    padding: 12px;
     border-radius: 8px;
     border: 1px solid rgba(255,255,255,0.15);
     background: rgba(255,255,255,0.05);
     color: #e6e6e6;
-    font-size: 14px;
-}
-
-input::placeholder,
-textarea::placeholder {
-    color: #9aa8c2;
+    font-size: 15px;
 }
 
 textarea {
-    min-height: 80px;
+    min-height: 90px;
     resize: vertical;
 }
 
 button[type="submit"],
 #btn-agregar-ingrediente,
 #btn-agregar-platillo-pedido {
-    padding: 10px 14px;
+    padding: 12px;
     border-radius: 8px;
     border: none;
     background: #0077ff;
     color: white;
-    font-size: 14px;
+    font-size: 15px;
     cursor: pointer;
     transition: 0.2s;
 }
 
-button[type="submit"]:hover,
-#btn-agregar-ingrediente:hover,
-#btn-agregar-platillo-pedido:hover {
+button:hover {
     background: #3399ff;
 }
 
-/* Agrupadores de ingredientes / platillos en pedido */
 #ingredientes-platillo,
 #pedido-platillos {
     display: flex;
     flex-wrap: wrap;
-    gap: 8px;
-    align-items: center;
+    gap: 10px;
 }
 
 /* ============================
@@ -157,45 +225,50 @@ button[type="submit"]:hover,
 table {
     width: 100%;
     border-collapse: collapse;
-    margin-top: 10px;
-    font-size: 14px;
+    margin-top: 16px;
 }
 
 thead {
-    background: rgba(0, 119, 255, 0.18);
+    background: rgba(0, 119, 255, 0.2);
 }
 
 th,
 td {
-    padding: 10px;
+    padding: 12px;
     border-bottom: 1px solid rgba(255,255,255,0.1);
-    text-align: left;
 }
 
 tbody tr:hover {
-    background: rgba(255,255,255,0.04);
+    background: rgba(255,255,255,0.05);
+}
+
+/* Scroll horizontal en móvil */
+table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
 }
 
 /* ============================
-   LISTA DE PLATILLOS
+   PLATILLOS (CARDS)
 ============================ */
 #lista-platillos {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-    gap: 16px;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 20px;
 }
 
 dish-card,
 .platillo-card {
     display: block;
-    padding: 16px;
+    padding: 20px;
     background: rgba(255,255,255,0.05);
-    border-radius: 10px;
+    border-radius: 12px;
     border: 1px solid rgba(255,255,255,0.1);
 }
 
 /* ============================
-   RESUMEN DE PEDIDO (order-summary)
+   RESUMEN DE PEDIDO
 ============================ */
 order-summary {
     display: block;
@@ -221,11 +294,12 @@ footer {
 /* ============================
    RESPONSIVE
 ============================ */
-@media (max-width: 768px) {
+
+/* Tablets */
+@media (max-width: 900px) {
     header {
         flex-direction: column;
         align-items: flex-start;
-        gap: 12px;
     }
 
     .header-right {
@@ -234,29 +308,13 @@ footer {
     }
 
     nav {
-        flex-wrap: wrap;
-    }
-
-    section {
-        padding: 18px;
-    }
-
-    #ingredientes-platillo,
-    #pedido-platillos {
-        flex-direction: column;
-        align-items: stretch;
-    }
-
-    table {
-        font-size: 13px;
+        width: 100%;
+        justify-content: space-between;
     }
 }
 
-@media (max-width: 480px) {
-    header {
-        padding: 12px 16px;
-    }
-
+/* Móviles */
+@media (max-width: 600px) {
     .header-left h1 {
         font-size: 18px;
     }
@@ -264,10 +322,20 @@ footer {
     nav button,
     .logout-btn {
         font-size: 13px;
-        padding: 7px 10px;
+        padding: 8px 10px;
     }
 
-    main {
-        padding: 0 10px 30px;
+    section {
+        padding: 18px;
+    }
+
+    form {
+        gap: 10px;
+    }
+
+    #ingredientes-platillo,
+    #pedido-platillos {
+        flex-direction: column;
+        align-items: stretch;
     }
 }
