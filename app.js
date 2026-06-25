@@ -259,3 +259,52 @@ document.getElementById("btn-agregar-ingrediente").addEventListener("click", () 
     alert("Ingrediente agregado");
     document.getElementById("ingrediente-cantidad").value = "";
 });
+
+let platilloEditando = null;
+
+const formPlatillo = document.getElementById("form-platillo");
+
+formPlatillo.addEventListener("submit", (e) => {
+    e.preventDefault();
+
+    const codigo = document.getElementById("platillo-codigo").value.trim();
+    const nombre = document.getElementById("platillo-nombre").value.trim();
+    const descripcion = document.getElementById("platillo-descripcion").value.trim();
+    const imagen = document.getElementById("platillo-imagen").value.trim();
+    const valor = parseFloat(document.getElementById("platillo-valor").value);
+
+    if (!codigo || !nombre || !valor) {
+        alert("Código, nombre y valor son obligatorios");
+        return;
+    }
+
+    let platillos = getPlatillos();
+
+    // EDITAR
+    if (platilloEditando) {
+        const index = platillos.findIndex(p => p.codigo === platilloEditando);
+        platillos[index] = { codigo, nombre, descripcion, imagen, valor, ingredientes: ingredientesTemp };
+        platilloEditando = null;
+    }
+    // CREAR
+    else {
+        if (platillos.some(p => p.codigo === codigo)) {
+            alert("Ya existe un platillo con ese código");
+            return;
+        }
+
+        platillos.push({
+            codigo,
+            nombre,
+            descripcion,
+            imagen,
+            valor,
+            ingredientes: ingredientesTemp
+        });
+    }
+
+    savePlatillos(platillos);
+    actualizarListaPlatillos();
+    formPlatillo.reset();
+    ingredientesTemp = [];
+});
