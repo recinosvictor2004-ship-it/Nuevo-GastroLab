@@ -337,3 +337,6 @@ document.addEventListener("click", (e) => {
         showView("platillos-view");
     }
 });
+
+cargarInsumosEnSelect();
+actualizarListaPlatillos();
