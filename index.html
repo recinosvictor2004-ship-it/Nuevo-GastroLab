@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>GastroLab - Cocina Molecular</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header>
+    <div class="header-left">
+        <h1>GastroLab - Cocina Molecular</h1>
+    </div>
+
+    <div class="header-right">
+        <nav>
+            <button data-view="inventario-view">Inventario</button>
+            <button data-view="platillos-view">Platillos</button>
+            <button data-view="pedidos-view">Pedidos</button>
+        </nav>
+
+        <!-- Cierre de sesión -->
+        <button id="btn-logout" class="logout-btn">Cerrar sesión</button>
+    </div>
+</header>
+
+<main>
+    <!-- INVENTARIO -->
+    <section id="inventario-view">
+        <h2>Inventario de Insumos</h2>
+        <form id="form-insumo">
+            <input type="text" id="insumo-codigo" placeholder="Código del insumo">
+            <input type="text" id="insumo-nombre" placeholder="Nombre">
+            <textarea id="insumo-descripcion" placeholder="Descripción"></textarea>
+            <input type="number" id="insumo-cantidad" placeholder="Cantidad disponible">
+            <select id="insumo-unidad">
+                <option value="gramos">Gramos</option>
+                <option value="mililitros">Mililitros</option>
+                <option value="unidades">Unidades</option>
+            </select>
+            <button type="submit">Guardar insumo</button>
+        </form>
+
+        <inventory-table></inventory-table>
+    </section>
+
+    <!-- PLATILLOS -->
+    <section id="platillos-view" style="display:none;">
+        <h2>Gestión de Platillos</h2>
+        <form id="form-platillo">
+            <input type="text" id="platillo-codigo" placeholder="Código del platillo">
+            <input type="text" id="platillo-nombre" placeholder="Nombre">
+            <textarea id="platillo-descripcion" placeholder="Descripción molecular"></textarea>
+            <input type="url" id="platillo-imagen" placeholder="URL de imagen">
+            <input type="number" id="platillo-valor" placeholder="Valor de venta">
+
+            <div id="ingredientes-platillo">
+                <select id="ingrediente-insumo"></select>
+                <input type="number" id="ingrediente-cantidad" placeholder="Cantidad usada">
+                <button type="button" id="btn-agregar-ingrediente">Agregar ingrediente</button>
+            </div>
+
+            <button type="submit">Guardar platillo</button>
+        </form>
+
+        <div id="lista-platillos">
+            <!-- <dish-card> web components -->
+        </div>
+    </section>
+
+    <!-- PEDIDOS -->
+    <section id="pedidos-view" style="display:none;">
+        <h2>Gestión de Pedidos</h2>
+        <form id="form-pedido">
+            <input type="text" id="pedido-numero" placeholder="Número de pedido">
+            <input type="text" id="pedido-cliente" placeholder="Nombre del cliente">
+            <input type="tel" id="pedido-telefono" placeholder="Teléfono">
+            <select id="pedido-estado">
+                <option value="pendiente">Pendiente</option>
+                <option value="en preparación">En preparación</option>
+                <option value="entregado">Entregado</option>
+            </select>
+
+            <div id="pedido-platillos">
+                <select id="pedido-platillo-select"></select>
+                <input type="number" id="pedido-platillo-cantidad" placeholder="Cantidad">
+                <button type="button" id="btn-agregar-platillo-pedido">Agregar platillo</button>
+            </div>
+
+            <order-summary></order-summary>
+
+            <button type="submit">Guardar pedido</button>
+        </form>
+
+        <table id="tabla-pedidos">
+            <thead>
+                <tr>
+                    <th>Número</th>
+                    <th>Cliente</th>
+                    <th>Estado</th>
+                    <th>Total</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </section>
+</main>
+
+<footer>
+    <p>Proyecto GastroLab - Cocina Molecular</p>
+</footer>
+
+<script src="components/inventory-table.js"></script>
+<script src="components/dish-card.js"></script>
+<script src="components/order-summary.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
