@@ -213,3 +213,8 @@ body {
     background: #b33;
     color: #111;
 }
+.menu-card p {
+    font-size: 13px;
+    margin-bottom: 4px;
+    color: #ccc;
+}
