@@ -1,6 +1,6 @@
 // Proteger páginas
 if (!localStorage.getItem("sesion")) {
-    if (!window.location.pathname.includes("login.html")) {
+    if (!window.location.pathname.includes("index.html")) {
         window.location.href = "login.html";
     }
 }
