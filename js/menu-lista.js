@@ -19,6 +19,7 @@ const btnCerrar = document.getElementById("btn-cerrar-modal");
 const btnAgregar = document.getElementById("btn-agregar");
 
 let idEditando = null;
+let ingredientesTemp = [];
 
 // ===============================
 // CARGAR PLATILLOS
@@ -45,6 +46,59 @@ function cargarPlatillos() {
 }
 
 // ===============================
+// CARGAR INSUMOS EN SELECT
+// ===============================
+function cargarInsumosSelect() {
+    const insumos = getCollection("inventario");
+    const select = document.getElementById("ingrediente-insumo");
+
+    select.innerHTML = "";
+    insumos.forEach(i => {
+        select.innerHTML += `<option value="${i.id}">${i.nombre}</option>`;
+    });
+}
+
+// ===============================
+// MOSTRAR INGREDIENTES EN LISTA
+// ===============================
+function mostrarIngredientes() {
+    const cont = document.getElementById("ingredientes-lista");
+    cont.innerHTML = "";
+
+    ingredientesTemp.forEach((ing, index) => {
+        const insumo = getCollection("inventario").find(i => i.id === ing.insumoID);
+
+        cont.innerHTML += `
+            <div class="ingrediente-item">
+                <span>${insumo?.nombre || "Insumo eliminado"} — ${ing.cantidad}</span>
+                <button class="btn-danger" onclick="eliminarIngrediente(${index})">X</button>
+            </div>
+        `;
+    });
+}
+
+window.eliminarIngrediente = (index) => {
+    ingredientesTemp.splice(index, 1);
+    mostrarIngredientes();
+};
+
+// ===============================
+// AGREGAR INGREDIENTE
+// ===============================
+document.getElementById("btn-agregar-ingrediente").addEventListener("click", () => {
+    const insumoID = document.getElementById("ingrediente-insumo").value;
+    const cantidad = Number(document.getElementById("ingrediente-cantidad").value);
+
+    if (!cantidad || cantidad <= 0) {
+        alert("Cantidad inválida");
+        return;
+    }
+
+    ingredientesTemp.push({ insumoID, cantidad });
+    mostrarIngredientes();
+});
+
+// ===============================
 // ABRIR MODAL PARA EDITAR
 // ===============================
 window.editarPlatillo = (id) => {
@@ -58,6 +112,12 @@ window.editarPlatillo = (id) => {
     editDescripcion.value = platillo.descripcion;
     editPrecio.value = platillo.precio;
     editImagen.value = platillo.imagen;
+
+    // Cargar ingredientes del platillo
+    ingredientesTemp = [...platillo.ingredientes];
+
+    cargarInsumosSelect();
+    mostrarIngredientes();
 
     modal.style.display = "flex";
 };
@@ -75,6 +135,11 @@ btnAgregar.addEventListener("click", () => {
     editPrecio.value = "";
     editImagen.value = "";
 
+    ingredientesTemp = [];
+
+    cargarInsumosSelect();
+    mostrarIngredientes();
+
     modal.style.display = "flex";
 });
 
@@ -84,23 +149,22 @@ btnAgregar.addEventListener("click", () => {
 btnGuardar.addEventListener("click", () => {
 
     if (idEditando) {
-        // EDITAR
         updateDocLS("platillos", idEditando, {
             nombre: editNombre.value,
             descripcion: editDescripcion.value,
             precio: Number(editPrecio.value),
-            imagen: editImagen.value
+            imagen: editImagen.value,
+            ingredientes: ingredientesTemp
         });
 
     } else {
-        // CREAR
         addDocLS("platillos", {
             id: crypto.randomUUID(),
             nombre: editNombre.value,
             descripcion: editDescripcion.value,
             precio: Number(editPrecio.value),
             imagen: editImagen.value,
-            ingredientes: [] // luego se agregan desde inventario
+            ingredientes: ingredientesTemp
         });
     }
 
