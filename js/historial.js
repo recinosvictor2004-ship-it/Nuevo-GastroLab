@@ -1,10 +1,11 @@
 import { db } from "./firebase.js";
+
 import {
     collection,
     getDocs,
     query,
     orderBy
-} from "firebase/firestore";
+} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
 const contenedor = document.querySelector(".historial-lista");
 
