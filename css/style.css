@@ -396,3 +396,12 @@ body {
 .tabla-reporte th {
     background: #f0f0f0;
 }
+.reporte-box {
+    background: #fff;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 0 10px #0002;
+    max-width: 900px;
+    margin: 60px auto; /* ← MÁS ABAJO */
+    color: black; /* ← TEXTO NEGRO */
+}
