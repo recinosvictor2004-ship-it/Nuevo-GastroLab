@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Reporte de Ventas</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <div class="menu-container">
+        <header class="menu-header">
+            <h1>Reporte de Ventas</h1>
+            <a href="panel.html" class="btn-primary">Regresar</a>
+        </header>
+
+        <section class="reporte-box">
+            <h2>Filtrar por rango de fechas</h2>
+
+            <div class="filtros">
+                <label>Fecha inicio:</label>
+                <input type="date" id="fechaInicio">
+
+                <label>Fecha fin:</label>
+                <input type="date" id="fechaFin">
+
+                <button id="btnGenerar" class="btn-primary">Generar Reporte</button>
+            </div>
+
+            <div id="resultado"></div>
+        </section>
+    </div>
+
+    <script type="module" src="js/reportes.js"></script>
+</body>
+</html>
