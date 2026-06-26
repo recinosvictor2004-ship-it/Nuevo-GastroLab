@@ -83,7 +83,7 @@ body {
 }
 
 /* ============================
-   BOTONES (COLOR ORIGINAL)
+   BOTONES
 ============================ */
 .btn-primary,
 .btn-danger {
@@ -96,7 +96,7 @@ body {
     transition: 0.2s;
 }
 
-/* DORADO ORIGINAL */
+/* DORADO */
 .btn-primary {
     border: 1px solid #ffb347;
     background: transparent;
@@ -108,7 +108,7 @@ body {
     color: #111;
 }
 
-/* ROJO ORIGINAL */
+/* ROJO */
 .btn-danger {
     border: 1px solid #b33;
     background: transparent;
@@ -148,7 +148,7 @@ body {
 .pedido-container {
     max-width: 1100px;
     margin: 0 auto;
-    padding: 40px 60px; /* ← TAMAÑO ORIGINAL */
+    padding: 40px 60px;
 }
 
 /* ============================
@@ -169,23 +169,25 @@ body {
 }
 
 /* ============================
-   GRID DEL MENÚ (DISEÑO ORIGINAL)
+   GRID DEL MENÚ (CORREGIDO)
 ============================ */
 .menu-grid {
     margin-top: 40px;
     display: grid;
-    grid-template-columns: repeat(2, minmax(220px, 1fr)); /* ← EXACTO COMO ANTES */
+    grid-template-columns: repeat(2, minmax(220px, 1fr));
     gap: 20px;
 }
 
-/* 3 columnas en pantallas grandes */
-.menu-grid,
+/* SOLO PARA PEDIDOS */
 .pedido-grid {
+    margin-top: 40px;
+    display: grid;
     grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 20px;
 }
 
 /* ============================
-   TARJETAS DEL MENÚ (ORIGINAL)
+   TARJETAS DEL MENÚ
 ============================ */
 .menu-card {
     background: #1a1a1a;
@@ -223,17 +225,9 @@ body {
     border-color: #ffb347;
 }
 
-
 /* ============================
    PEDIDOS
 ============================ */
-.pedido-grid {
-    margin-top: 40px;
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-    gap: 20px;
-}
-
 .pedido-card {
     background: #1a1a1a;
     padding: 20px;
@@ -265,7 +259,7 @@ body {
 }
 
 /* ============================
-   MODAL BASE (oscuro)
+   MODAL BASE
 ============================ */
 .modal {
     position: fixed;
@@ -289,26 +283,7 @@ body {
 }
 
 /* ============================
-   MODAL DE PEDIDOS (blanco)
-============================ */
-.modal-content h2 {
-    margin-bottom: 15px;
-}
-
-.edit-item {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 10px;
-}
-
-.modal-actions {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 20px;
-}
-
-/* ============================
-   MODAL DE PLATILLOS (blanco)
+   MODAL DE PLATILLOS (BLANCO)
 ============================ */
 #modal-editar .modal-content {
     background: #fff !important;
@@ -316,7 +291,6 @@ body {
     border: 1px solid #ccc !important;
 }
 
-/* Letras negras SOLO en modal de platillos */
 #modal-editar label,
 #modal-editar input,
 #modal-editar select,
@@ -324,7 +298,6 @@ body {
     color: #000 !important;
 }
 
-/* Inputs blancos SOLO en modal de platillos */
 #modal-editar input,
 #modal-editar select {
     background: #fff !important;
@@ -332,53 +305,9 @@ body {
     color: #000 !important;
 }
 
-/* Lista de ingredientes */
 #modal-editar #ingredientes-lista .ingrediente-item {
     background: #f3f3f3 !important;
     color: #000 !important;
-}
-
-/* ============================
-   RESPONSIVE
-============================ */
-@media (max-width: 900px) {
-    .menu-header,
-    .pedido-header {
-        flex-direction: column;
-        text-align: center;
-        gap: 20px;
-    }
-
-    .menu-container,
-    .pedido-container {
-        padding: 30px 20px;
-    }
-}
-
-@media (max-width: 600px) {
-    .menu-grid {
-        grid-template-columns: 1fr; /* SOLO EN MÓVIL */
-    }
-
-    .menu-container,
-    .pedido-container {
-        padding: 20px;
-    }
-}
-
-/* ============================
-   GRID DEL MENÚ (CORREGIDO)
-============================ */
-.menu-grid {
-    margin-top: 40px;
-    display: grid;
-    grid-template-columns: repeat(2, minmax(220px, 1fr));
-    gap: 20px;
-}
-
-/* SOLO PARA PEDIDOS */
-.pedido-grid {
-    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
 }
 
 /* ============================
@@ -407,7 +336,7 @@ body {
     margin-top: 20px;
 }
 
-.tabla-reporte th, 
+.tabla-reporte th,
 .tabla-reporte td {
     border: 1px solid #ddd;
     padding: 10px;
@@ -418,3 +347,30 @@ body {
     background: #f0f0f0;
 }
 
+/* ============================
+   RESPONSIVE
+============================ */
+@media (max-width: 900px) {
+    .menu-header,
+    .pedido-header {
+        flex-direction: column;
+        text-align: center;
+        gap: 20px;
+    }
+
+    .menu-container,
+    .pedido-container {
+        padding: 30px 20px;
+    }
+}
+
+@media (max-width: 600px) {
+    .menu-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .menu-container,
+    .pedido-container {
+        padding: 20px;
+    }
+}
