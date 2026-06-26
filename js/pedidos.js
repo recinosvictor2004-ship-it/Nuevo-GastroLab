@@ -58,7 +58,7 @@ async function cargarPlatillos() {
     });
 }
 
-window.actualizarCantidad = (id, nombre, precio, cantidad) => {
+function actualizarCantidad(id, nombre, precio, cantidad) {
     cantidad = Number(cantidad);
 
     if (cantidad <= 0) {
