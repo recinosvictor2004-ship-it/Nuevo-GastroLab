@@ -7,28 +7,26 @@
 </head>
 
 <body>
-    <div class="main-bg">
-        <nav class="navbar">
-            <a href="#">Home</a>
-            <a href="#">About us</a>
-            <a href="#">Menu</a>
-            <a href="#">Gallery</a>
-            <a href="#">Reservation</a>
-            <a href="#">Location</a>
-            <a href="#">Blog</a>
-        </nav>
 
-        <section class="hero">
-            <div class="hero-text">
+    <div class="main-bg">
+
+        <!-- CONTENEDOR CENTRAL -->
+        <section class="hero" style="justify-content: center; text-align: center;">
+
+            <div class="hero-text" style="max-width: 380px;">
+
                 <h3>Welcome</h3>
                 <h1>Restaurant Themes</h1>
                 <h2>New Flavours</h2>
+
                 <p>Gestiona tu restaurante con un sistema modular: menú, inventario, pedidos y más.</p>
 
-                <button class="btn-primary">Book a table</button>
+                <button class="btn-primary" style="margin-bottom: 30px;">Book a table</button>
 
+                <!-- LOGIN CARD CENTRADO -->
                 <div class="login-card">
                     <h4>Iniciar sesión</h4>
+
                     <form id="login-form">
                         <label for="email">Correo</label>
                         <input type="email" id="email" required>
@@ -39,8 +37,11 @@
                         <button type="submit" class="btn-primary">Entrar</button>
                     </form>
                 </div>
+
             </div>
+
         </section>
+
     </div>
 
     <script src="js/login.js"></script>
