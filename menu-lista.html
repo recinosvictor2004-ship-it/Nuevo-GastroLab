@@ -24,48 +24,6 @@
 
     </div>
 
-    <!-- MODAL PARA CREAR / EDITAR PLATILLO -->
-    <div id="modal-editar" class="modal">
-        <div class="modal-content">
-
-            <h2 id="modal-titulo">Editar Platillo</h2>
-
-            <label>Nombre</label>
-            <input type="text" id="edit-nombre">
-
-            <label>Descripción</label>
-            <input type="text" id="edit-descripcion">
-
-            <label>Precio</label>
-            <input type="number" id="edit-precio">
-
-            <label>URL de Imagen</label>
-            <input type="text" id="edit-imagen">
-
-            <h3>Ingredientes</h3>
-
-            <!-- LISTA DE INGREDIENTES -->
-            <div id="ingredientes-lista"></div>
-
-            <!-- FORMULARIO PARA AGREGAR INGREDIENTE -->
-            <div class="ingrediente-form">
-                <label>Insumo</label>
-                <select id="ingrediente-insumo"></select>
-
-                <label>Cantidad</label>
-                <input type="number" id="ingrediente-cantidad" placeholder="Cantidad" min="0.01" step="0.01">
-
-                <button class="btn-primary" id="btn-agregar-ingrediente">Agregar Ingrediente</button>
-            </div>
-
-            <div class="modal-actions">
-                <button id="btn-guardar-cambios" class="btn-primary">Guardar</button>
-                <button id="btn-cerrar-modal" class="btn-danger">Cerrar</button>
-            </div>
-
-        </div>
-    </div>
-
     <!-- PROTECCIÓN DE SESIÓN -->
     <script>
         if (localStorage.getItem("sesion") !== "activa") {
@@ -73,10 +31,10 @@
         }
     </script>
 
-    <!-- ORDEN CORRECTO -->
-    <script type="module" src="js/storage.js"></script>
-    <script type="module" src="js/platillos.js"></script>
-    <script type="module" src="js/menu-lista.js"></script>
+    <!-- ORDEN CORRECTO (SIN MODULE) -->
+    <script src="js/storage.js"></script>
+    <script src="js/platillos.js"></script>
+    <script src="js/menu-lista.js"></script>
 
 </body>
 </html>

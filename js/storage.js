@@ -3,17 +3,17 @@
 // ===============================
 
 // Leer una colección
-export function getCollection(nombre) {
+function getCollection(nombre) {
     return JSON.parse(localStorage.getItem(nombre)) || [];
 }
 
 // Guardar una colección
-export function saveCollection(nombre, data) {
+function saveCollection(nombre, data) {
     localStorage.setItem(nombre, JSON.stringify(data));
 }
 
 // Agregar un documento
-export function addDocLS(nombre, doc) {
+function addDocLS(nombre, doc) {
     const coleccion = getCollection(nombre);
     doc.id = crypto.randomUUID(); // ID único
     coleccion.push(doc);
@@ -22,7 +22,7 @@ export function addDocLS(nombre, doc) {
 }
 
 // Actualizar un documento
-export function updateDocLS(nombre, id, cambios) {
+function updateDocLS(nombre, id, cambios) {
     const coleccion = getCollection(nombre);
     const index = coleccion.findIndex(d => d.id === id);
     if (index !== -1) {
@@ -32,6 +32,6 @@ export function updateDocLS(nombre, id, cambios) {
 }
 
 // Obtener un documento por ID
-export function getDocLS(nombre, id) {
+function getDocLS(nombre, id) {
     return getCollection(nombre).find(d => d.id === id);
 }

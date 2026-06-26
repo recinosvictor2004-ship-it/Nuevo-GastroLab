@@ -1,5 +1,3 @@
-import { getCollection } from "./storage.js";
-
 function generarReporteVentas(fechaInicio, fechaFin) {
     const ventas = getCollection("ventas") || [];
     const platillos = getCollection("platillos") || [];
@@ -41,7 +39,6 @@ document.getElementById("btnGenerar").addEventListener("click", () => {
     const inicio = document.getElementById("fechaInicio").value;
     const fin = document.getElementById("fechaFin").value;
 
-    // VALIDACIÓN: NO PERMITIR SI FALTAN FECHAS
     if (!inicio || !fin) {
         alert("Debe seleccionar ambas fechas para generar el reporte.");
         return;

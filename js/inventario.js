@@ -1,10 +1,6 @@
-import { 
-    getCollection, 
-    saveCollection, 
-    addDocLS, 
-    updateDocLS 
-} from "./storage.js";
-
+// ===============================
+// VARIABLES
+// ===============================
 const grid = document.querySelector(".menu-grid");
 
 // ===============================
@@ -13,7 +9,7 @@ const grid = document.querySelector(".menu-grid");
 function inicializarInsumos() {
     const existentes = getCollection("inventario");
 
-    if (existentes.length === 0) {
+    if (!existentes || existentes.length === 0) {
         const iniciales = [
             { id: crypto.randomUUID(), nombre: "masa", cantidad: 10, unidad: "piezas", costo: 5 },
             { id: crypto.randomUUID(), nombre: "queso", cantidad: 5, unidad: "kg", costo: 30 },
@@ -37,7 +33,7 @@ inicializarInsumos();
 function cargarInsumos() {
     grid.innerHTML = "";
 
-    const insumos = getCollection("inventario");
+    const insumos = getCollection("inventario") || [];
 
     insumos.forEach(i => {
         grid.innerHTML += `
@@ -82,7 +78,7 @@ document.getElementById("btn-agregar-insumo")?.addEventListener("click", () => {
 // ELIMINAR INSUMO
 // ===============================
 window.eliminarInsumo = (id) => {
-    const insumos = getCollection("inventario");
+    const insumos = getCollection("inventario") || [];
     const nuevos = insumos.filter(i => i.id !== id);
 
     saveCollection("inventario", nuevos);
@@ -93,7 +89,7 @@ window.eliminarInsumo = (id) => {
 // EDITAR INSUMO
 // ===============================
 window.editarInsumo = (id) => {
-    const insumos = getCollection("inventario");
+    const insumos = getCollection("inventario") || [];
     const insumo = insumos.find(i => i.id === id);
 
     const nuevoNombre = prompt("Nuevo nombre:", insumo.nombre);
@@ -112,18 +108,7 @@ window.editarInsumo = (id) => {
     cargarInsumos();
 };
 
-// Ejecutar al cargar
+// ===============================
+// EJECUTAR
+// ===============================
 cargarInsumos();
-function inicializarInsumos() {
-    if (!localStorage.getItem("inventario")) {
-        const insumosBase = [
-            { id: crypto.randomUUID(), nombre: "Masa", stock: 50, unidad: "kg" },
-            { id: crypto.randomUUID(), nombre: "Queso", stock: 30, unidad: "kg" },
-            { id: crypto.randomUUID(), nombre: "Tomate", stock: 40, unidad: "kg" }
-        ];
-
-        localStorage.setItem("inventario", JSON.stringify(insumosBase));
-    }
-}
-
-inicializarInsumos();

@@ -1,10 +1,6 @@
-import { 
-    getCollection, 
-    saveCollection, 
-    updateDocLS, 
-    addDocLS 
-} from "./storage.js";
-
+// ===============================
+// VARIABLES
+// ===============================
 const lista = document.querySelector(".menu-grid");
 
 // ELEMENTOS DEL MODAL
@@ -27,7 +23,7 @@ let ingredientesTemp = [];
 function cargarPlatillos() {
     lista.innerHTML = "";
 
-    const platillos = getCollection("platillos");
+    const platillos = getCollection("platillos") || [];
 
     platillos.forEach(p => {
         lista.innerHTML += `
@@ -49,7 +45,7 @@ function cargarPlatillos() {
 // CARGAR INSUMOS EN SELECT
 // ===============================
 function cargarInsumosSelect() {
-    const insumos = getCollection("inventario");
+    const insumos = getCollection("inventario") || [];
     const select = document.getElementById("ingrediente-insumo");
 
     select.innerHTML = "";
@@ -59,7 +55,7 @@ function cargarInsumosSelect() {
 }
 
 // ===============================
-// MOSTRAR INGREDIENTES EN LISTA
+// MOSTRAR INGREDIENTES
 // ===============================
 function mostrarIngredientes() {
     const cont = document.getElementById("ingredientes-lista");
@@ -99,7 +95,7 @@ document.getElementById("btn-agregar-ingrediente").addEventListener("click", () 
 });
 
 // ===============================
-// ABRIR MODAL PARA EDITAR
+// EDITAR PLATILLO
 // ===============================
 window.editarPlatillo = (id) => {
     idEditando = id;
@@ -122,7 +118,7 @@ window.editarPlatillo = (id) => {
 };
 
 // ===============================
-// ABRIR MODAL PARA CREAR
+// CREAR PLATILLO
 // ===============================
 btnAgregar.addEventListener("click", () => {
     idEditando = null;
@@ -184,12 +180,14 @@ btnCerrar.addEventListener("click", () => {
 // ELIMINAR PLATILLO
 // ===============================
 window.eliminarPlatillo = (id) => {
-    const platillos = getCollection("platillos");
+    const platillos = getCollection("platillos") || [];
     const nuevos = platillos.filter(p => p.id !== id);
 
     saveCollection("platillos", nuevos);
     cargarPlatillos();
 };
 
-// Ejecutar al cargar
+// ===============================
+// EJECUTAR
+// ===============================
 cargarPlatillos();

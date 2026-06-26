@@ -1,5 +1,6 @@
-import { getCollection, saveCollection } from "./storage.js";
-
+// ===============================
+// VARIABLES Y ELEMENTOS
+// ===============================
 const lista = document.getElementById("lista-platillos");
 const totalSpan = document.getElementById("total");
 const btnConfirmar = document.getElementById("btn-confirmar");
@@ -13,7 +14,7 @@ let carrito = {};
 // CARGAR PLATILLOS
 // ===============================
 function cargarPlatillos() {
-    const platillos = getCollection("platillos");
+    const platillos = getCollection("platillos") || [];
     lista.innerHTML = "";
 
     platillos.forEach(p => {
@@ -40,7 +41,6 @@ function cargarPlatillos() {
     });
 }
 
-
 // ===============================
 // SUMAR / RESTAR
 // ===============================
@@ -59,7 +59,7 @@ window.restar = (id) => {
 // AGREGAR AL CARRITO
 // ===============================
 window.agregar = (id) => {
-    const platillos = getCollection("platillos");
+    const platillos = getCollection("platillos") || [];
     const p = platillos.find(x => x.id === id);
 
     const cantidad = Number(document.getElementById(`cant-${id}`).textContent);
@@ -92,7 +92,7 @@ function actualizarTotal() {
 // VALIDAR INVENTARIO
 // ===============================
 function validarInventario() {
-    const inventario = getCollection("inventario");
+    const inventario = getCollection("inventario") || [];
 
     for (const item of Object.values(carrito)) {
         for (const ing of item.ingredientes) {
@@ -119,7 +119,7 @@ function validarInventario() {
 // DESCONTAR INVENTARIO + REPORTE
 // ===============================
 function descontarInventario() {
-    const inventario = getCollection("inventario");
+    const inventario = getCollection("inventario") || [];
     let reporte = "Insumos descontados:\n\n";
 
     Object.values(carrito).forEach(item => {
@@ -142,7 +142,7 @@ function descontarInventario() {
 // REPORTE DE INSUMOS POR AGOTARSE
 // ===============================
 function reporteAgotados() {
-    const inventario = getCollection("inventario");
+    const inventario = getCollection("inventario") || [];
 
     const bajos = inventario.filter(i => i.cantidad <= 2);
 
@@ -158,10 +158,10 @@ function reporteAgotados() {
 }
 
 // ===============================
-// 🔥 REGISTRAR VENTA (NUEVO)
+// REGISTRAR VENTA
 // ===============================
 function registrarVenta(pedido) {
-    const ventas = getCollection("ventas");
+    const ventas = getCollection("ventas") || [];
 
     ventas.push({
         id: Date.now(),
@@ -193,7 +193,7 @@ btnConfirmar.addEventListener("click", () => {
     const reporteDescuento = descontarInventario();
     const reporteBajos = reporteAgotados();
 
-    const pedidos = getCollection("pedidos");
+    const pedidos = getCollection("pedidos") || [];
 
     const nuevoPedido = {
         id: Date.now(),
@@ -209,7 +209,6 @@ btnConfirmar.addEventListener("click", () => {
     pedidos.push(nuevoPedido);
     saveCollection("pedidos", pedidos);
 
-    // 🔥 REGISTRAR VENTA REAL
     registrarVenta(nuevoPedido);
 
     alert(
@@ -225,7 +224,6 @@ btnConfirmar.addEventListener("click", () => {
     cargarPlatillos();
     actualizarTotal();
 
-    // 🔥 ACTUALIZAR INVENTARIO AUTOMÁTICAMENTE SI ESTÁ ABIERTO
     if (window.opener && window.opener.location.pathname.includes("inventario.html")) {
         window.opener.location.reload();
     }
