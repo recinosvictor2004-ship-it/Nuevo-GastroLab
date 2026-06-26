@@ -14,19 +14,36 @@ function inicializarPlatillos() {
     if (existentes.length === 0) {
         const iniciales = [
             {
+                id: crypto.randomUUID(),
                 nombre: "Pizza Margarita",
                 precio: 45,
-                imagen: "img/pizza.jpg"
+                imagen: "img/pizza.jpg",
+                ingredientes: [
+                    { insumoID: "masa", cantidad: 1 },
+                    { insumoID: "queso", cantidad: 0.25 },
+                    { insumoID: "tomate", cantidad: 0.20 }
+                ]
             },
             {
+                id: crypto.randomUUID(),
                 nombre: "Hamburguesa Clásica",
                 precio: 35,
-                imagen: "img/hamburguesa.jpg"
+                imagen: "img/hamburguesa.jpg",
+                ingredientes: [
+                    { insumoID: "pan", cantidad: 1 },
+                    { insumoID: "carne", cantidad: 0.30 },
+                    { insumoID: "lechuga", cantidad: 0.10 }
+                ]
             },
             {
+                id: crypto.randomUUID(),
                 nombre: "Papas Fritas",
                 precio: 15,
-                imagen: "img/papas.jpg"
+                imagen: "img/papas.jpg",
+                ingredientes: [
+                    { insumoID: "papas", cantidad: 0.25 },
+                    { insumoID: "aceite", cantidad: 0.05 }
+                ]
             }
         ];
 
@@ -34,33 +51,23 @@ function inicializarPlatillos() {
     }
 }
 
-// Ejecutar al cargar
 inicializarPlatillos();
 
 // ===============================
-// OBTENER TODOS LOS PLATILLOS
+// EXPORTS
 // ===============================
 export function obtenerPlatillos() {
     return getCollection("platillos");
 }
 
-// ===============================
-// CREAR PLATILLO
-// ===============================
 export function crearPlatillo(data) {
-    if (!data.nombre || !data.precio) {
-        throw new Error("Faltan datos obligatorios");
-    }
-
     return addDocLS("platillos", {
+        id: crypto.randomUUID(),
         ...data,
         precio: Number(data.precio)
     });
 }
 
-// ===============================
-// ACTUALIZAR PLATILLO
-// ===============================
 export function actualizarPlatillo(id, data) {
     updateDocLS("platillos", id, {
         ...data,
@@ -68,9 +75,6 @@ export function actualizarPlatillo(id, data) {
     });
 }
 
-// ===============================
-// ELIMINAR PLATILLO
-// ===============================
 export function eliminarPlatillo(id) {
     const platillos = getCollection("platillos");
     const nuevos = platillos.filter(p => p.id !== id);
