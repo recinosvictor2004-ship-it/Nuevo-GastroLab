@@ -32,7 +32,7 @@ function cargarPlatillos() {
     platillos.forEach(p => {
         lista.innerHTML += `
             <div class="menu-card">
-                <img src="${p.imagen}" class="menu-img">
+                <img src="${p.imagen || 'img/default.png'}" class="menu-img">
                 <h3>${p.nombre}</h3>
                 <p>${p.descripcion}</p>
 
@@ -113,7 +113,6 @@ window.editarPlatillo = (id) => {
     editPrecio.value = platillo.precio;
     editImagen.value = platillo.imagen;
 
-    // Cargar ingredientes del platillo
     ingredientesTemp = [...platillo.ingredientes];
 
     cargarInsumosSelect();
@@ -148,12 +147,14 @@ btnAgregar.addEventListener("click", () => {
 // ===============================
 btnGuardar.addEventListener("click", () => {
 
+    const imagenRuta = editImagen.value.trim();
+
     if (idEditando) {
         updateDocLS("platillos", idEditando, {
             nombre: editNombre.value,
             descripcion: editDescripcion.value,
             precio: Number(editPrecio.value),
-            imagen: editImagen.value,
+            imagen: imagenRuta,
             ingredientes: ingredientesTemp
         });
 
@@ -163,7 +164,7 @@ btnGuardar.addEventListener("click", () => {
             nombre: editNombre.value,
             descripcion: editDescripcion.value,
             precio: Number(editPrecio.value),
-            imagen: editImagen.value,
+            imagen: imagenRuta,
             ingredientes: ingredientesTemp
         });
     }

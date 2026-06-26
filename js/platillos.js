@@ -18,7 +18,7 @@ function inicializarPlatillos() {
                 nombre: "Pizza Margarita",
                 descripcion: "Pizza clásica con queso y tomate",
                 precio: 45,
-                imagen: "img/pizza.jpg",
+                imagen: "img/pizza.jpg",   // ← RUTA CORRECTA
                 ingredientes: [
                     { insumoID: "masa", cantidad: 1 },
                     { insumoID: "queso", cantidad: 0.25 },
@@ -30,7 +30,7 @@ function inicializarPlatillos() {
                 nombre: "Hamburguesa Clásica",
                 descripcion: "Carne, pan y vegetales frescos",
                 precio: 35,
-                imagen: "img/hamburguesa.jpg",
+                imagen: "img/hamburguesa.jpg",  // ← RUTA CORRECTA
                 ingredientes: [
                     { insumoID: "pan", cantidad: 1 },
                     { insumoID: "carne", cantidad: 0.30 },
@@ -42,7 +42,7 @@ function inicializarPlatillos() {
                 nombre: "Papas Fritas",
                 descripcion: "Papas crujientes con sal",
                 precio: 15,
-                imagen: "img/papas.jpg",
+                imagen: "img/papas.jpeg",   // ← CORREGIDO: antes decía papas.jpg
                 ingredientes: [
                     { insumoID: "papas", cantidad: 0.25 },
                     { insumoID: "aceite", cantidad: 0.05 }

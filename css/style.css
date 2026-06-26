@@ -189,7 +189,7 @@ body {
 ============================ */
 .menu-card {
     background: #1a1a1a;
-    border-radius: 12px;
+    border-radius: 14px;
     padding: 20px;
     cursor: pointer;
     text-align: center;
@@ -198,20 +198,31 @@ body {
     text-transform: uppercase;
     letter-spacing: 2px;
     border: 1px solid #333;
-    transition: 0.2s;
 }
 
 .menu-card:hover {
     border-color: #ffb347;
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(255, 179, 71, 0.15);
 }
 
-.menu-img {
+.menu-img,
+.pedido-img {
     width: 100%;
-    height: 140px; /* ← TAMAÑO ORIGINAL */
+    height: 150px;
     object-fit: cover;
-    border-radius: 10px;
-    margin-bottom: 10px;
+    border-radius: 12px;
+    margin-bottom: 12px;
+    border: 1px solid #222;
+    background: #000;
+    transition: 0.25s ease;
 }
+
+.menu-card:hover .menu-img {
+    transform: scale(1.03);
+    border-color: #ffb347;
+}
+
 
 /* ============================
    PEDIDOS
