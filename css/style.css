@@ -176,3 +176,170 @@ body {
 .menu-card:hover {
     border-color: #ffb347;
 }
+.menu-img {
+    width: 100%;
+    height: 140px;
+    object-fit: cover;
+    border-radius: 10px;
+    margin-bottom: 10px;
+}
+
+.menu-card small {
+    display: block;
+    margin-top: 6px;
+    font-size: 11px;
+    color: #bbb;
+}
+
+.menu-actions {
+    margin-top: 12px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.btn-danger {
+    padding: 10px 20px;
+    border-radius: 30px;
+    border: 1px solid #b33;
+    background: transparent;
+    color: #b33;
+    text-transform: uppercase;
+    font-size: 12px;
+    letter-spacing: 2px;
+    cursor: pointer;
+}
+
+.btn-danger:hover {
+    background: #b33;
+    color: #111;
+}
+.menu-card p {
+    font-size: 13px;
+    margin-bottom: 4px;
+    color: #ccc;
+}
+.pedido-section h2,
+.pedido-resumen h2 {
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+}
+
+.pedido-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(220px, 1fr));
+    gap: 20px;
+}
+
+.pedido-card {
+    background: #1a1a1a;
+    padding: 20px;
+    border-radius: 12px;
+    border: 1px solid #333;
+}
+
+.pedido-card h3 {
+    margin-bottom: 6px;
+}
+
+.pedido-card p {
+    font-size: 13px;
+    color: #ccc;
+    margin-bottom: 10px;
+}
+
+.pedido-card input {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 12px;
+    border-radius: 6px;
+    border: none;
+    background: #222;
+    color: #fff;
+}
+
+.pedido-resumen {
+    margin-top: 40px;
+    background: #1a1a1a;
+    padding: 20px;
+    border-radius: 12px;
+    border: 1px solid #333;
+}
+
+.pedido-lista {
+    margin-bottom: 20px;
+}
+
+.pedido-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 6px 0;
+    border-bottom: 1px solid #333;
+}
+
+.pedido-total {
+    margin-bottom: 20px;
+}
+
+.pedido-confirmar {
+    width: 100%;
+}
+.menu-header div {
+    display: flex;
+    gap: 10px;
+}
+
+.menu-img {
+    width: 100%;
+    height: 140px;
+    object-fit: cover;
+    border-radius: 10px;
+    margin-bottom: 10px;
+}
+
+.menu-actions {
+    margin-top: 12px;
+    display: flex;
+    justify-content: space-between;
+}
+.menu-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.historial-lista {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.historial-card {
+    background: #1a1a1a;
+    padding: 20px;
+    border-radius: 12px;
+    border: 1px solid #333;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.historial-info h3 {
+    margin-bottom: 6px;
+}
+
+.historial-info p {
+    font-size: 13px;
+    color: #ccc;
+}
+
+.historial-info ul {
+    margin-top: 6px;
+    margin-left: 20px;
+    color: #bbb;
+    font-size: 13px;
+}
+
+.historial-total h3 {
+    color: #ffb347;
+    font-size: 18px;
+}
