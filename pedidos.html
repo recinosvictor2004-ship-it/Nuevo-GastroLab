@@ -2,43 +2,30 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Pedidos</title>
+    <title>Realizar Pedido</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
-<body>    
 
-    <div class="menu-container">
+<body>
 
-        <!-- ENCABEZADO -->
-        <header class="menu-header">
-            <h1>Pedidos</h1>
+    <div class="pedido-container">
+
+        <header class="pedido-header">
+            <h1>Realizar Pedido</h1>
             <a href="menu.html" class="btn-primary">Volver</a>
         </header>
 
-        <!-- SECCIÓN DE SELECCIÓN DE PLATILLOS -->
-        <section class="pedido-section">
-            <h2>Seleccionar Platillos</h2>
-
-            <!-- AQUÍ SE CARGAN LOS PLATILLOS DESDE FIRESTORE -->
-            <div class="pedido-grid"></div>
+        <section id="lista-platillos" class="pedido-grid">
+            <!-- Aquí se cargan los platillos -->
         </section>
 
-        <!-- SECCIÓN DEL RESUMEN DEL PEDIDO -->
-        <section class="pedido-resumen">
-            <h2>Resumen del Pedido</h2>
-
-            <div class="pedido-lista"></div>
-
-            <div class="pedido-total">
-                <h3>Total: Q 0.00</h3>
-            </div>
-
-            <button class="btn-primary pedido-confirmar">Confirmar Pedido</button>
-        </section>
+        <div class="pedido-footer">
+            <h2>Total: Q <span id="total">0</span></h2>
+            <button id="btn-confirmar" class="btn-primary">Confirmar Pedido</button>
+        </div>
 
     </div>
 
-    <!-- ORDEN CORRECTO DE SCRIPTS -->
     <script type="module" src="js/firebase.js"></script>
     <script type="module" src="js/auth.js"></script>
     <script type="module" src="js/pedidos.js"></script>
