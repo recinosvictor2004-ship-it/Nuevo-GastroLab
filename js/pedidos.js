@@ -4,6 +4,9 @@ const lista = document.getElementById("lista-platillos");
 const totalSpan = document.getElementById("total");
 const btnConfirmar = document.getElementById("btn-confirmar");
 
+const inputNombre = document.getElementById("cliente-nombre");
+const inputTelefono = document.getElementById("cliente-telefono");
+
 let carrito = {}; // { idPlatillo: { nombre, precio, cantidad, ingredientes } }
 
 // ===============================
@@ -85,6 +88,33 @@ function actualizarTotal() {
 }
 
 // ===============================
+// VALIDAR INVENTARIO
+// ===============================
+function validarInventario() {
+    const inventario = getCollection("inventario");
+
+    for (const item of Object.values(carrito)) {
+        for (const ing of item.ingredientes) {
+            const insumo = inventario.find(i => i.id === ing.insumoID);
+
+            if (!insumo) {
+                alert(`El insumo ${ing.insumoID} no existe en inventario`);
+                return false;
+            }
+
+            const requerido = ing.cantidad * item.cantidad;
+
+            if (insumo.cantidad < requerido) {
+                alert(`No hay suficiente ${insumo.nombre} para ${item.nombre}`);
+                return false;
+            }
+        }
+    }
+
+    return true;
+}
+
+// ===============================
 // DESCONTAR INVENTARIO
 // ===============================
 function descontarInventario() {
@@ -93,10 +123,8 @@ function descontarInventario() {
     Object.values(carrito).forEach(item => {
         item.ingredientes.forEach(ing => {
             const insumo = inventario.find(i => i.id === ing.insumoID);
-            if (!insumo) return;
-
-            const cantidadNecesaria = ing.cantidad * item.cantidad;
-            insumo.cantidad -= cantidadNecesaria;
+            const requerido = ing.cantidad * item.cantidad;
+            insumo.cantidad -= requerido;
         });
     });
 
@@ -107,10 +135,18 @@ function descontarInventario() {
 // CONFIRMAR PEDIDO
 // ===============================
 btnConfirmar.addEventListener("click", () => {
+
+    if (!inputNombre.value.trim() || !inputTelefono.value.trim()) {
+        alert("Debes ingresar nombre y teléfono del cliente");
+        return;
+    }
+
     if (Object.keys(carrito).length === 0) {
         alert("No hay platillos en el pedido");
         return;
     }
+
+    if (!validarInventario()) return;
 
     descontarInventario();
 
@@ -119,6 +155,10 @@ btnConfirmar.addEventListener("click", () => {
     pedidos.push({
         id: Date.now(),
         fecha: new Date().toLocaleString(),
+        cliente: {
+            nombre: inputNombre.value.trim(),
+            telefono: inputTelefono.value.trim()
+        },
         items: carrito,
         total: Number(totalSpan.textContent)
     });
@@ -128,6 +168,8 @@ btnConfirmar.addEventListener("click", () => {
     alert("Pedido creado correctamente");
 
     carrito = {};
+    inputNombre.value = "";
+    inputTelefono.value = "";
     cargarPlatillos();
     actualizarTotal();
 });
