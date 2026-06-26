@@ -1,16 +1,11 @@
-import { db } from "./firebase.js";
-import {
-    collection,
-    getDocs,
-    addDoc,
-    deleteDoc,
-    updateDoc,
-    doc,
-    getDoc
-} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+import { 
+    getCollection, 
+    saveCollection, 
+    updateDocLS, 
+    addDocLS 
+} from "./storage.js";
 
 const lista = document.querySelector(".menu-grid");
-const btnAgregar = document.querySelector('.menu-header a[href="#"]');
 
 // ELEMENTOS DEL MODAL
 const modal = document.getElementById("modal-editar");
@@ -26,19 +21,17 @@ let idEditando = null;
 // ===============================
 // CARGAR PLATILLOS
 // ===============================
-async function cargarPlatillos() {
+function cargarPlatillos() {
     lista.innerHTML = "";
 
-    const snap = await getDocs(collection(db, "platillos"));
+    const platillos = getCollection("platillos");
 
-    snap.forEach(p => {
-        const data = p.data();
-
+    platillos.forEach(p => {
         lista.innerHTML += `
             <div class="menu-card">
-                <img src="${data.imagen}" class="menu-img">
-                <h3>${data.nombre}</h3>
-                <p>${data.descripcion}</p>
+                <img src="${p.imagen}" class="menu-img">
+                <h3>${p.nombre}</h3>
+                <p>${p.descripcion}</p>
 
                 <div class="menu-actions">
                     <button class="btn-primary" onclick="editarPlatillo('${p.id}')">Editar</button>
@@ -52,18 +45,15 @@ async function cargarPlatillos() {
 // ===============================
 // ABRIR MODAL PARA EDITAR
 // ===============================
-window.editarPlatillo = async (id) => {
+window.editarPlatillo = (id) => {
     idEditando = id;
 
-    const ref = doc(db, "platillos", id);
-    const snap = await getDoc(ref);
-    const data = snap.data();
+    const platillo = getCollection("platillos").find(p => p.id === id);
 
-    // Cargar datos en inputs
-    editNombre.value = data.nombre;
-    editDescripcion.value = data.descripcion;
-    editPrecio.value = data.precio;
-    editImagen.value = data.imagen;
+    editNombre.value = platillo.nombre;
+    editDescripcion.value = platillo.descripcion;
+    editPrecio.value = platillo.precio;
+    editImagen.value = platillo.imagen;
 
     modal.style.display = "flex";
 };
@@ -71,10 +61,8 @@ window.editarPlatillo = async (id) => {
 // ===============================
 // GUARDAR CAMBIOS
 // ===============================
-btnGuardar.addEventListener("click", async () => {
-    const ref = doc(db, "platillos", idEditando);
-
-    await updateDoc(ref, {
+btnGuardar.addEventListener("click", () => {
+    updateDocLS("platillos", idEditando, {
         nombre: editNombre.value,
         descripcion: editDescripcion.value,
         precio: Number(editPrecio.value),
@@ -96,9 +84,13 @@ btnCerrar.addEventListener("click", () => {
 // ===============================
 // ELIMINAR PLATILLO
 // ===============================
-window.eliminarPlatillo = async (id) => {
-    await deleteDoc(doc(db, "platillos", id));
+window.eliminarPlatillo = (id) => {
+    const platillos = getCollection("platillos");
+    const nuevos = platillos.filter(p => p.id !== id);
+
+    saveCollection("platillos", nuevos);
     cargarPlatillos();
 };
 
+// Ejecutar al cargar
 cargarPlatillos();

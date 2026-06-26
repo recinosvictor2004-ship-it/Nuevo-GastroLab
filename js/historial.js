@@ -1,82 +1,57 @@
-import { db } from "./firebase.js";
-
-import {
-    collection,
-    getDocs,
-    query,
-    orderBy
-} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+import { getCollection } from "./storage.js";
 
 const contenedor = document.querySelector(".historial-lista");
 
 // ===============================
 // FORMATEAR FECHA
 // ===============================
-function formatearFecha(timestamp) {
-    if (!timestamp) return "Fecha no disponible";
-
-    const fecha = timestamp.toDate();
-    return fecha.toLocaleDateString("es-ES", {
-        year: "numeric",
-        month: "long",
-        day: "numeric",
-        hour: "2-digit",
-        minute: "2-digit"
-    });
+function formatearFecha(fechaString) {
+    if (!fechaString) return "Fecha no disponible";
+    return fechaString;
 }
 
 // ===============================
 // CARGAR HISTORIAL
 // ===============================
-async function cargarHistorial() {
-    try {
-        contenedor.innerHTML = "";
+function cargarHistorial() {
+    contenedor.innerHTML = "";
 
-        const q = query(collection(db, "pedidos"), orderBy("fecha", "desc"));
-        const snap = await getDocs(q);
+    const pedidos = getCollection("pedidos");
 
-        if (snap.empty) {
-            contenedor.innerHTML = `
-                <p style="text-align:center; color:#ccc; margin-top:20px;">
-                    No hay pedidos registrados
-                </p>
-            `;
-            return;
-        }
-
-        snap.forEach(p => {
-            const data = p.data();
-
-            const platillos = Array.isArray(data.platillos) ? data.platillos : [];
-
-            const platillosHTML = platillos
-                .map(pl => `<li>${pl.nombre} (${pl.cantidad}) — Q ${pl.subtotal.toFixed(2)}</li>`)
-                .join("");
-
-            contenedor.innerHTML += `
-                <div class="historial-card">
-                    <div class="historial-info">
-                        <h3>Pedido</h3>
-                        <p>Fecha: ${formatearFecha(data.fecha)}</p>
-                        <p>Platillos:</p>
-                        <ul>${platillosHTML}</ul>
-                    </div>
-
-                    <div class="historial-total">
-                        <h3>Total: Q ${Number(data.total).toFixed(2)}</h3>
-                    </div>
-                </div>
-            `;
-        });
-
-    } catch (error) {
-        console.error("Error al cargar historial:", error);
+    if (pedidos.length === 0) {
         contenedor.innerHTML = `
-            <p style="text-align:center; color:red; margin-top:20px;">
-                Error al cargar el historial
+            <p style="text-align:center; color:#ccc; margin-top:20px;">
+                No hay pedidos registrados
             </p>
         `;
+        return;
     }
+
+    // Ordenar por fecha (más reciente primero)
+    pedidos.sort((a, b) => new Date(b.fecha) - new Date(a.fecha));
+
+    pedidos.forEach(p => {
+        const items = Object.values(p.items || {});
+
+        const platillosHTML = items
+            .map(i => `<li>${i.nombre} (${i.cantidad}) — Q ${(i.precio * i.cantidad).toFixed(2)}</li>`)
+            .join("");
+
+        contenedor.innerHTML += `
+            <div class="historial-card">
+                <div class="historial-info">
+                    <h3>Pedido</h3>
+                    <p>Fecha: ${formatearFecha(p.fecha)}</p>
+                    <p>Platillos:</p>
+                    <ul>${platillosHTML}</ul>
+                </div>
+
+                <div class="historial-total">
+                    <h3>Total: Q ${Number(p.total).toFixed(2)}</h3>
+                </div>
+            </div>
+        `;
+    });
 }
 
 cargarHistorial();
