@@ -9,31 +9,44 @@
 <body>
 
     <div class="menu-container">
-
-        <!-- ENCABEZADO -->
         <header class="menu-header">
             <h1>Historial de Pedidos</h1>
-            <a href="menu.html" class="btn-primary">Volver al menú</a>
+            <a href="menu.html" class="btn-primary">Volver</a>
         </header>
 
-        <!-- LISTA DINÁMICA DE PEDIDOS -->
-        <section class="historial-lista" id="historial-lista">
-            <!-- Aquí se cargarán los pedidos -->
-        </section>
-
+        <section id="historial-lista" class="menu-grid"></section>
     </div>
 
-    <!-- PROTECCIÓN DE SESIÓN -->
+    <!-- Protección de sesión -->
     <script>
         if (localStorage.getItem("sesion") !== "activa") {
             window.location.href = "index.html";
         }
     </script>
+    
+    <div id="modal-pago" class="modal" style="display:none;">
+    <div class="modal-content">
+        <h2>Registrar Pago</h2>
 
-    <!-- SCRIPTS -->
-    <script type="module" src="js/storage.js"></script>
-    <script type="module" src="js/historial.js"></script>
+        <label>Método de Pago:</label>
+        <select id="metodoPago">
+            <option value="Efectivo">Efectivo</option>
+            <option value="Tarjeta">Tarjeta</option>
+            <option value="Transferencia">Transferencia</option>
+            <option value="QR">QR</option>
+        </select>
 
+        <div class="modal-actions">
+            <button class="btn-primary" id="btnConfirmarPago">Confirmar Pago</button>
+            <button class="btn-danger" id="btnCancelarPago">Cancelar</button>
+        </div>
+    </div>
+</div>
+
+
+    <!-- SCRIPTS CORRECTOS -->
+    <script src="js/storage.js"></script>
+    <script src="js/historial.js"></script>
 
 </body>
 </html>

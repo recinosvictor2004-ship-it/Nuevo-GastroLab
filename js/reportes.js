@@ -1,40 +1,59 @@
+// ===============================
+// GENERAR REPORTE POR PLATILLO
+// ===============================
 function generarReporteVentas(fechaInicio, fechaFin) {
     const ventas = getCollection("ventas") || [];
-    const platillos = getCollection("platillos") || [];
 
     const inicio = new Date(fechaInicio);
     const fin = new Date(fechaFin);
 
+    // Filtrar ventas por rango
     const ventasFiltradas = ventas.filter(v => {
         const fechaVenta = new Date(v.fecha);
         return fechaVenta >= inicio && fechaVenta <= fin;
     });
 
+    // Agrupar por platillo
     const resumen = {};
 
     ventasFiltradas.forEach(v => {
-        v.items.forEach(item => {
-            if (!resumen[item.platilloID]) {
-                const p = platillos.find(pl => pl.id === item.platilloID);
+        Object.values(v.items).forEach(item => {
 
-                resumen[item.platilloID] = {
-                    codigo: p.id,
-                    nombre: p.nombre,
+            if (!resumen[item.id]) {
+                resumen[item.id] = {
+                    codigo: item.id,
+                    nombre: item.nombre,
                     cantidad: 0,
                     total: 0
                 };
             }
 
-            resumen[item.platilloID].cantidad += item.cantidad;
-            resumen[item.platilloID].total += item.cantidad * item.precio;
+            resumen[item.id].cantidad += item.cantidad;
+            resumen[item.id].total += item.cantidad * item.precio;
         });
     });
 
-    const totalGeneral = ventasFiltradas.reduce((acc, v) => acc + v.total, 0);
+    const lista = Object.values(resumen);
 
-    return { totalGeneral, resumen: Object.values(resumen) };
+    // Total general
+    const totalGeneral = lista.reduce((acc, p) => acc + p.total, 0);
+
+    // Platillo más vendido (por cantidad)
+    const masVendido = lista.length > 0
+        ? lista.reduce((a, b) => a.cantidad > b.cantidad ? a : b)
+        : null;
+
+    // Platillo con mayor ingreso
+    const mayorIngreso = lista.length > 0
+        ? lista.reduce((a, b) => a.total > b.total ? a : b)
+        : null;
+
+    return { totalGeneral, lista, masVendido, mayorIngreso };
 }
 
+// ===============================
+// BOTÓN GENERAR
+// ===============================
 document.getElementById("btnGenerar").addEventListener("click", () => {
     const inicio = document.getElementById("fechaInicio").value;
     const fin = document.getElementById("fechaFin").value;
@@ -44,11 +63,23 @@ document.getElementById("btnGenerar").addEventListener("click", () => {
         return;
     }
 
-    const { totalGeneral, resumen } = generarReporteVentas(inicio, fin);
+    const { totalGeneral, lista, masVendido, mayorIngreso } =
+        generarReporteVentas(inicio, fin);
 
     let html = `
-        <h3 style="color:black;">Total General de Ventas: Q${totalGeneral.toFixed(2)}</h3>
+        <h2 style="color:black;">Total General de Ventas: Q${totalGeneral.toFixed(2)}</h2>
+    `;
 
+    if (masVendido) {
+        html += `
+            <div class="resumen-destacado">
+                <p><strong>Platillo más vendido:</strong> ${masVendido.nombre} (${masVendido.cantidad} unidades)</p>
+                <p><strong>Platillo con mayor ingreso:</strong> ${mayorIngreso.nombre} (Q${mayorIngreso.total.toFixed(2)})</p>
+            </div>
+        `;
+    }
+
+    html += `
         <table class="tabla-reporte">
             <thead>
                 <tr>
@@ -61,7 +92,7 @@ document.getElementById("btnGenerar").addEventListener("click", () => {
             <tbody>
     `;
 
-    resumen.forEach(r => {
+    lista.forEach(r => {
         html += `
             <tr>
                 <td>${r.codigo}</td>
