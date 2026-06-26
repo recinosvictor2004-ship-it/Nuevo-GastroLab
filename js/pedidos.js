@@ -1,4 +1,20 @@
-import { db } from "./firebase.js";
+async function cargarPlatillos() {
+    const platillos = getCollection("platillos");
+
+    platillos.forEach(p => {
+        lista.innerHTML += `
+            <div class="pedido-card">
+                <img src="${p.imagen}" class="pedido-img">
+                <h3>${p.nombre}</h3>
+                <p>Q ${p.precio}</p>
+
+                <input type="number" min="0" value="0"
+                    onchange="actualizarCantidad('${p.id}', '${p.nombre}', ${p.precio}, this.value)">
+            </div>
+        `;
+    });
+}
+
 
 import {
     collection,
@@ -150,3 +166,20 @@ btnConfirmar.addEventListener("click", async () => {
 });
 
 cargarPlatillos();
+btnConfirmar.addEventListener("click", () => {
+    const pedidos = getCollection("pedidos");
+
+    pedidos.push({
+        id: crypto.randomUUID(),
+        fecha: new Date().toLocaleString(),
+        items: carrito,
+        total: calcularTotal(true)
+    });
+
+    saveCollection("pedidos", pedidos);
+
+    alert("Pedido guardado correctamente");
+    carrito = {};
+    lista.innerHTML = "";
+    cargarPlatillos();
+});
