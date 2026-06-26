@@ -157,6 +157,22 @@ function reporteAgotados() {
 }
 
 // ===============================
+// 🔥 REGISTRAR VENTA (NUEVO)
+// ===============================
+function registrarVenta(pedido) {
+    const ventas = getCollection("ventas");
+
+    ventas.push({
+        id: Date.now(),
+        fecha: new Date().toISOString().split("T")[0],
+        items: pedido.items,
+        total: pedido.total
+    });
+
+    saveCollection("ventas", ventas);
+}
+
+// ===============================
 // CONFIRMAR PEDIDO
 // ===============================
 btnConfirmar.addEventListener("click", () => {
@@ -178,7 +194,7 @@ btnConfirmar.addEventListener("click", () => {
 
     const pedidos = getCollection("pedidos");
 
-    pedidos.push({
+    const nuevoPedido = {
         id: Date.now(),
         fecha: new Date().toLocaleString(),
         cliente: {
@@ -187,12 +203,16 @@ btnConfirmar.addEventListener("click", () => {
         },
         items: carrito,
         total: Number(totalSpan.textContent)
-    });
+    };
 
+    pedidos.push(nuevoPedido);
     saveCollection("pedidos", pedidos);
 
+    // 🔥 REGISTRAR VENTA REAL
+    registrarVenta(nuevoPedido);
+
     alert(
-        "Pedido creado correctamente\n\n" +
+        "Pedido creado y registrado como venta\n\n" +
         reporteDescuento +
         "\n" +
         reporteBajos
