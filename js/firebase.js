@@ -1,18 +1,24 @@
-// IMPORTS DESDE CDN (en cada archivo JS que use Firestore/Auth)
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getAuth } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-import { getFirestore } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+// Importar SDKs principales
+import { initializeApp } from "firebase/app";
+import { getFirestore } from "firebase/firestore";
+import { getAuth } from "firebase/auth";
+import { getStorage } from "firebase/storage";
 
-// TU CONFIG (cámbiala por la de tu proyecto)
+// Configuración de tu proyecto Firebase
 const firebaseConfig = {
-    apiKey: "TU_API_KEY",
-    authDomain: "TU_AUTH_DOMAIN",
-    projectId: "TU_PROJECT_ID",
-    storageBucket: "TU_STORAGE_BUCKET",
-    messagingSenderId: "TU_SENDER_ID",
-    appId: "TU_APP_ID"
+  apiKey: "AIzaSyD0FegoC91QAVHXlqaDQP0BPxwcV1rZQMY",
+  authDomain: "gatrolab-babf2.firebaseapp.com",
+  projectId: "gatrolab-babf2",
+  storageBucket: "gatrolab-babf2.firebasestorage.app",
+  messagingSenderId: "1048808489091",
+  appId: "1:1048808489091:web:7adbe4f65527921b335bb6",
+  measurementId: "G-LFJNSXVP90"
 };
 
+// Inicializar Firebase
 const app = initializeApp(firebaseConfig);
-export const auth = getAuth(app);
+
+// Exportar servicios
 export const db = getFirestore(app);
+export const auth = getAuth(app);
+export const storage = getStorage(app);
