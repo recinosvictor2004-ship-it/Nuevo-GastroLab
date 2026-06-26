@@ -7,7 +7,7 @@ import {
     doc,
     serverTimestamp,
     getDoc
-} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+} from "firebase/firestore";
 
 const grid = document.querySelector(".pedido-grid");
 const resumenLista = document.querySelector(".pedido-lista");
@@ -104,7 +104,7 @@ async function descontarInventario() {
 
             const cantidadNecesaria = ing.cantidad * item.cantidad;
 
-            const nuevaCantidad = data.cantidad - cantidadNecesaria;
+            const nuevaCantidad = Math.max(0, data.cantidad - cantidadNecesaria);
 
             await updateDoc(ref, { cantidad: nuevaCantidad });
         }
