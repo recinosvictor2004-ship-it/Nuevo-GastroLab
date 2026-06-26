@@ -307,3 +307,39 @@ body {
     justify-content: space-between;
     align-items: center;
 }
+.historial-lista {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.historial-card {
+    background: #1a1a1a;
+    padding: 20px;
+    border-radius: 12px;
+    border: 1px solid #333;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.historial-info h3 {
+    margin-bottom: 6px;
+}
+
+.historial-info p {
+    font-size: 13px;
+    color: #ccc;
+}
+
+.historial-info ul {
+    margin-top: 6px;
+    margin-left: 20px;
+    color: #bbb;
+    font-size: 13px;
+}
+
+.historial-total h3 {
+    color: #ffb347;
+    font-size: 18px;
+}
