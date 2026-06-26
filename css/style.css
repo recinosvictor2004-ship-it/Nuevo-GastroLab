@@ -178,6 +178,12 @@ body {
     gap: 20px;
 }
 
+/* 3 columnas en pantallas grandes */
+.menu-grid,
+.pedido-grid {
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+}
+
 /* ============================
    TARJETAS DEL MENÚ (ORIGINAL)
 ============================ */
@@ -248,7 +254,7 @@ body {
 }
 
 /* ============================
-   MODAL
+   MODAL BASE (oscuro)
 ============================ */
 .modal {
     position: fixed;
@@ -272,61 +278,8 @@ body {
 }
 
 /* ============================
-   RESPONSIVE
+   MODAL DE PEDIDOS (blanco)
 ============================ */
-
-/* Tablets */
-@media (max-width: 900px) {
-    .menu-header,
-    .pedido-header {
-        flex-direction: column;
-        text-align: center;
-        gap: 20px;
-    }
-
-    .menu-container,
-    .pedido-container {
-        padding: 30px 20px;
-    }
-}
-
-/* Móviles */
-@media (max-width: 600px) {
-    .menu-grid {
-        grid-template-columns: 1fr; /* SOLO EN MÓVIL */
-    }
-
-    .menu-container,
-    .pedido-container {
-        padding: 20px;
-    }
-}
-/* ============================
-   MODAL (para editar pedidos)
-============================ */
-.modal {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0,0,0,0.6);
-    display: none;
-    justify-content: center;
-    align-items: center;
-    z-index: 9999;
-}
-
-.modal-content {
-    background: #fff;
-    padding: 25px;
-    border-radius: 10px;
-    width: 350px;
-    max-height: 90vh;
-    overflow-y: auto;
-    box-shadow: 0 0 15px rgba(0,0,0,0.3);
-}
-
 .modal-content h2 {
     margin-bottom: 15px;
 }
@@ -341,4 +294,63 @@ body {
     display: flex;
     justify-content: space-between;
     margin-top: 20px;
+}
+
+/* ============================
+   MODAL DE PLATILLOS (blanco)
+============================ */
+#modal-editar .modal-content {
+    background: #fff !important;
+    color: #000 !important;
+    border: 1px solid #ccc !important;
+}
+
+/* Letras negras SOLO en modal de platillos */
+#modal-editar label,
+#modal-editar input,
+#modal-editar select,
+#modal-editar h3 {
+    color: #000 !important;
+}
+
+/* Inputs blancos SOLO en modal de platillos */
+#modal-editar input,
+#modal-editar select {
+    background: #fff !important;
+    border: 1px solid #ccc !important;
+    color: #000 !important;
+}
+
+/* Lista de ingredientes */
+#modal-editar #ingredientes-lista .ingrediente-item {
+    background: #f3f3f3 !important;
+    color: #000 !important;
+}
+
+/* ============================
+   RESPONSIVE
+============================ */
+@media (max-width: 900px) {
+    .menu-header,
+    .pedido-header {
+        flex-direction: column;
+        text-align: center;
+        gap: 20px;
+    }
+
+    .menu-container,
+    .pedido-container {
+        padding: 30px 20px;
+    }
+}
+
+@media (max-width: 600px) {
+    .menu-grid {
+        grid-template-columns: 1fr; /* SOLO EN MÓVIL */
+    }
+
+    .menu-container,
+    .pedido-container {
+        padding: 20px;
+    }
 }
