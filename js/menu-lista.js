@@ -9,12 +9,14 @@ const lista = document.querySelector(".menu-grid");
 
 // ELEMENTOS DEL MODAL
 const modal = document.getElementById("modal-editar");
+const tituloModal = document.getElementById("modal-titulo");
 const editNombre = document.getElementById("edit-nombre");
 const editDescripcion = document.getElementById("edit-descripcion");
 const editPrecio = document.getElementById("edit-precio");
 const editImagen = document.getElementById("edit-imagen");
 const btnGuardar = document.getElementById("btn-guardar-cambios");
 const btnCerrar = document.getElementById("btn-cerrar-modal");
+const btnAgregar = document.getElementById("btn-agregar");
 
 let idEditando = null;
 
@@ -50,6 +52,8 @@ window.editarPlatillo = (id) => {
 
     const platillo = getCollection("platillos").find(p => p.id === id);
 
+    tituloModal.textContent = "Editar Platillo";
+
     editNombre.value = platillo.nombre;
     editDescripcion.value = platillo.descripcion;
     editPrecio.value = platillo.precio;
@@ -59,19 +63,49 @@ window.editarPlatillo = (id) => {
 };
 
 // ===============================
+// ABRIR MODAL PARA CREAR
+// ===============================
+btnAgregar.addEventListener("click", () => {
+    idEditando = null;
+
+    tituloModal.textContent = "Agregar Platillo";
+
+    editNombre.value = "";
+    editDescripcion.value = "";
+    editPrecio.value = "";
+    editImagen.value = "";
+
+    modal.style.display = "flex";
+});
+
+// ===============================
 // GUARDAR CAMBIOS
 // ===============================
 btnGuardar.addEventListener("click", () => {
-    updateDocLS("platillos", idEditando, {
-        nombre: editNombre.value,
-        descripcion: editDescripcion.value,
-        precio: Number(editPrecio.value),
-        imagen: editImagen.value
-    });
+
+    if (idEditando) {
+        // EDITAR
+        updateDocLS("platillos", idEditando, {
+            nombre: editNombre.value,
+            descripcion: editDescripcion.value,
+            precio: Number(editPrecio.value),
+            imagen: editImagen.value
+        });
+
+    } else {
+        // CREAR
+        addDocLS("platillos", {
+            id: crypto.randomUUID(),
+            nombre: editNombre.value,
+            descripcion: editDescripcion.value,
+            precio: Number(editPrecio.value),
+            imagen: editImagen.value,
+            ingredientes: [] // luego se agregan desde inventario
+        });
+    }
 
     modal.style.display = "none";
     cargarPlatillos();
-    alert("Platillo actualizado correctamente");
 });
 
 // ===============================

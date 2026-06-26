@@ -8,6 +8,30 @@ import {
 const grid = document.querySelector(".menu-grid");
 
 // ===============================
+// CREAR INSUMOS POR DEFECTO (si no existen)
+// ===============================
+function inicializarInsumos() {
+    const existentes = getCollection("inventario");
+
+    if (existentes.length === 0) {
+        const iniciales = [
+            { id: crypto.randomUUID(), nombre: "masa", cantidad: 10, unidad: "piezas", costo: 5 },
+            { id: crypto.randomUUID(), nombre: "queso", cantidad: 5, unidad: "kg", costo: 30 },
+            { id: crypto.randomUUID(), nombre: "tomate", cantidad: 8, unidad: "kg", costo: 12 },
+            { id: crypto.randomUUID(), nombre: "pan", cantidad: 20, unidad: "piezas", costo: 3 },
+            { id: crypto.randomUUID(), nombre: "carne", cantidad: 10, unidad: "kg", costo: 40 },
+            { id: crypto.randomUUID(), nombre: "lechuga", cantidad: 5, unidad: "kg", costo: 10 },
+            { id: crypto.randomUUID(), nombre: "papas", cantidad: 15, unidad: "kg", costo: 8 },
+            { id: crypto.randomUUID(), nombre: "aceite", cantidad: 10, unidad: "litros", costo: 20 }
+        ];
+
+        iniciales.forEach(i => addDocLS("inventario", i));
+    }
+}
+
+inicializarInsumos();
+
+// ===============================
 // CARGAR INSUMOS
 // ===============================
 function cargarInsumos() {
@@ -44,6 +68,7 @@ document.getElementById("btn-agregar-insumo")?.addEventListener("click", () => {
     if (!nombre || !unidad) return;
 
     addDocLS("inventario", {
+        id: crypto.randomUUID(),
         nombre,
         cantidad,
         unidad,

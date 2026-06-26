@@ -16,6 +16,7 @@ function inicializarPlatillos() {
             {
                 id: crypto.randomUUID(),
                 nombre: "Pizza Margarita",
+                descripcion: "Pizza clásica con queso y tomate",
                 precio: 45,
                 imagen: "img/pizza.jpg",
                 ingredientes: [
@@ -27,6 +28,7 @@ function inicializarPlatillos() {
             {
                 id: crypto.randomUUID(),
                 nombre: "Hamburguesa Clásica",
+                descripcion: "Carne, pan y vegetales frescos",
                 precio: 35,
                 imagen: "img/hamburguesa.jpg",
                 ingredientes: [
@@ -38,6 +40,7 @@ function inicializarPlatillos() {
             {
                 id: crypto.randomUUID(),
                 nombre: "Papas Fritas",
+                descripcion: "Papas crujientes con sal",
                 precio: 15,
                 imagen: "img/papas.jpg",
                 ingredientes: [
@@ -63,6 +66,8 @@ export function obtenerPlatillos() {
 export function crearPlatillo(data) {
     return addDocLS("platillos", {
         id: crypto.randomUUID(),
+        descripcion: data.descripcion || "",
+        ingredientes: data.ingredientes || [],
         ...data,
         precio: Number(data.precio)
     });
