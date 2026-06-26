@@ -15,124 +15,21 @@
             <h1>Menú de Platillos</h1>
             <div>
                 <a href="menu.html" class="btn-primary">Volver</a>
-                <a href="#" class="btn-primary">Agregar Platillo</a>
+                <button class="btn-primary" id="btn-agregar">Agregar Platillo</button>
             </div>
         </header>
 
-        <!-- GRID DE PLATILLOS -->
-        <section class="menu-grid">
-
-            <!-- 1 -->
-            <div class="menu-card">
-                <img src="https://i.imgur.com/7YQZQ.jpg" class="menu-img">
-                <h3>Esferas de Caprese</h3>
-                <p>Mozzarella esferificada con tomate y albahaca fresca.</p>
-
-                <div class="menu-actions">
-                    <button class="btn-primary">Editar</button>
-                    <button class="btn-danger">Eliminar</button>
-                </div>
-            </div>
-
-            <!-- 2 -->
-            <div class="menu-card">
-                <img src="https://i.imgur.com/8KQZQ.jpg" class="menu-img">
-                <h3>Risotto de Trufa Negra</h3>
-                <p>Arroz arborio cremoso con mantequilla y trufa.</p>
-
-                <div class="menu-actions">
-                    <button class="btn-primary">Editar</button>
-                    <button class="btn-danger">Eliminar</button>
-                </div>
-            </div>
-
-            <!-- 3 -->
-            <div class="menu-card">
-                <img src="https://i.imgur.com/3YQZQ.jpg" class="menu-img">
-                <h3>Salmón en Costra</h3>
-                <p>Filete sellado con costra de hierbas.</p>
-
-                <div class="menu-actions">
-                    <button class="btn-primary">Editar</button>
-                    <button class="btn-danger">Eliminar</button>
-                </div>
-            </div>
-
-            <!-- 4 -->
-            <div class="menu-card">
-                <img src="https://i.imgur.com/4YQZQ.jpg" class="menu-img">
-                <h3>Ravioles de Espinaca</h3>
-                <p>Pasta fresca rellena con ricotta y espinaca.</p>
-
-                <div class="menu-actions">
-                    <button class="btn-primary">Editar</button>
-                    <button class="btn-danger">Eliminar</button>
-                </div>
-            </div>
-
-            <!-- 5 -->
-            <div class="menu-card">
-                <img src="https://i.imgur.com/5YQZQ.jpg" class="menu-img">
-                <h3>Pollo al Limón</h3>
-                <p>Pechuga marinada en limón y romero.</p>
-
-                <div class="menu-actions">
-                    <button class="btn-primary">Editar</button>
-                    <button class="btn-danger">Eliminar</button>
-                </div>
-            </div>
-
-            <!-- 6 -->
-            <div class="menu-card">
-                <img src="https://i.imgur.com/6YQZQ.jpg" class="menu-img">
-                <h3>Tacos de Pulpo</h3>
-                <p>Pulpo tierno con salsa de chipotle.</p>
-
-                <div class="menu-actions">
-                    <button class="btn-primary">Editar</button>
-                    <button class="btn-danger">Eliminar</button>
-                </div>
-            </div>
-
-            <!-- 7 -->
-            <div class="menu-card">
-                <img src="https://i.imgur.com/7YQZQ2.jpg" class="menu-img">
-                <h3>Filete con Reducción</h3>
-                <p>Corte premium con salsa de vino tinto.</p>
-
-                <div class="menu-actions">
-                    <button class="btn-primary">Editar</button>
-                    <button class="btn-danger">Eliminar</button>
-                </div>
-            </div>
-
-            <!-- 8 -->
-            <div class="menu-card">
-                <img src="https://i.imgur.com/8YQZQ2.jpg" class="menu-img">
-                <h3>Pasta Alfredo</h3>
-                <p>Fettuccine con camarones y salsa cremosa.</p>
-
-                <div class="menu-actions">
-                    <button class="btn-primary">Editar</button>
-                    <button class="btn-danger">Eliminar</button>
-                </div>
-            </div>
-
-            <!-- 9 -->
-            <div class="menu-card">
-                <img src="https://i.imgur.com/9YQZQ2.jpg" class="menu-img">
-                <h3>Cheesecake</h3>
-                <p>Cheesecake suave con frutos rojos.</p>
-
-                <div class="menu-actions">
-                    <button class="btn-primary">Editar</button>
-                    <button class="btn-danger">Eliminar</button>
-                </div>
-            </div>
-
+        <!-- GRID DE PLATILLOS (DINÁMICO) -->
+        <section class="menu-grid" id="platillos-grid">
+            <!-- Aquí se cargan los platillos desde Firestore -->
         </section>
 
     </div>
+
+    <!-- ORDEN CORRECTO DE SCRIPTS -->
+    <script type="module" src="js/firebase.js"></script>
+    <script type="module" src="js/auth.js"></script>
+    <script type="module" src="js/platillos.js"></script>
 
 </body>
 </html>
