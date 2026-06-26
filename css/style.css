@@ -1,3 +1,6 @@
+/* ============================
+   RESET Y BASE
+============================ */
 * {
     margin: 0;
     padding: 0;
@@ -8,9 +11,12 @@
 body {
     background: #111;
     color: #f5f5f5;
+    min-height: 100vh;
 }
 
-/* Fondo principal tipo landing */
+/* ============================
+   FONDO PRINCIPAL
+============================ */
 .main-bg {
     min-height: 100vh;
     background: radial-gradient(circle at top left, #333 0, #111 40%);
@@ -18,7 +24,9 @@ body {
     flex-direction: column;
 }
 
-/* Navbar superior */
+/* ============================
+   NAVBAR
+============================ */
 .navbar {
     display: flex;
     justify-content: flex-end;
@@ -38,24 +46,21 @@ body {
     color: #ffb347;
 }
 
-/* Contenido central */
+/* ============================
+   HERO / LOGIN
+============================ */
 .hero {
     flex: 1;
     display: flex;
     align-items: center;
-    padding: 0 60px;
+    justify-content: center; /* CENTRA TODO */
+    padding: 20px;
+    text-align: center;
 }
 
 .hero-text {
     max-width: 480px;
-}
-
-.hero-text h3 {
-    font-size: 16px;
-    letter-spacing: 4px;
-    text-transform: uppercase;
-    color: #ffb347;
-    margin-bottom: 10px;
+    margin: 0 auto;
 }
 
 .hero-text h1 {
@@ -77,17 +82,24 @@ body {
     margin-bottom: 25px;
 }
 
-/* Botones principales */
-.btn-primary {
+/* ============================
+   BOTONES
+============================ */
+.btn-primary,
+.btn-danger {
     padding: 12px 26px;
     border-radius: 30px;
-    border: 1px solid #ffb347;
-    background: transparent;
-    color: #ffb347;
     text-transform: uppercase;
     font-size: 12px;
     letter-spacing: 2px;
     cursor: pointer;
+    transition: 0.2s;
+}
+
+.btn-primary {
+    border: 1px solid #ffb347;
+    background: transparent;
+    color: #ffb347;
 }
 
 .btn-primary:hover {
@@ -95,218 +107,130 @@ body {
     color: #111;
 }
 
-/* Login card sobre el hero */
-.login-card {
-    margin-top: 30px;
-    background: rgba(0,0,0,0.6);
-    padding: 20px;
-    border-radius: 12px;
-    max-width: 320px;
-}
-
-.login-card h4 {
-    margin-bottom: 10px;
-    font-size: 16px;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-}
-
-.login-card label {
-    font-size: 12px;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    margin-top: 10px;
-    display: block;
-}
-
-.login-card input {
-    width: 100%;
-    padding: 8px;
-    margin-top: 4px;
-    border-radius: 6px;
-    border: none;
-    background: #222;
-    color: #f5f5f5;
-}
-
-.login-card button {
-    margin-top: 14px;
-    width: 100%;
-}
-
-/* Menú principal (vista menu.html) */
-.menu-container {
-    min-height: 100vh;
-    background: #111;
-    padding: 40px 60px;
-}
-
-.menu-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.menu-header h1 {
-    font-size: 26px;
-    text-transform: uppercase;
-    letter-spacing: 4px;
-}
-
-.menu-grid {
-    margin-top: 40px;
-    display: grid;
-    grid-template-columns: repeat(2, minmax(220px, 1fr));
-    gap: 20px;
-}
-
-.menu-card {
-    background: #1a1a1a;
-    border-radius: 12px;
-    padding: 20px;
-    cursor: pointer;
-    text-align: center;
-    text-decoration: none;
-    color: #f5f5f5;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    border: 1px solid #333;
-}
-
-.menu-card:hover {
-    border-color: #ffb347;
-}
-.menu-img {
-    width: 100%;
-    height: 140px;
-    object-fit: cover;
-    border-radius: 10px;
-    margin-bottom: 10px;
-}
-
-.menu-card small {
-    display: block;
-    margin-top: 6px;
-    font-size: 11px;
-    color: #bbb;
-}
-
-.menu-actions {
-    margin-top: 12px;
-    display: flex;
-    justify-content: space-between;
-}
-
 .btn-danger {
-    padding: 10px 20px;
-    border-radius: 30px;
     border: 1px solid #b33;
     background: transparent;
     color: #b33;
-    text-transform: uppercase;
-    font-size: 12px;
-    letter-spacing: 2px;
-    cursor: pointer;
 }
 
 .btn-danger:hover {
     background: #b33;
     color: #111;
 }
-.menu-card p {
-    font-size: 13px;
-    margin-bottom: 4px;
-    color: #ccc;
-}
-.pedido-section h2,
-.pedido-resumen h2 {
-    margin-bottom: 20px;
-    text-transform: uppercase;
-    letter-spacing: 3px;
-}
 
-.pedido-grid {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(220px, 1fr));
-    gap: 20px;
-}
-
-.pedido-card {
-    background: #1a1a1a;
-    padding: 20px;
+/* ============================
+   LOGIN CARD
+============================ */
+.login-card {
+    margin: 0 auto;
+    background: rgba(0,0,0,0.6);
+    padding: 25px;
     border-radius: 12px;
-    border: 1px solid #333;
+    max-width: 350px;
 }
 
-.pedido-card h3 {
-    margin-bottom: 6px;
-}
-
-.pedido-card p {
-    font-size: 13px;
-    color: #ccc;
-    margin-bottom: 10px;
-}
-
-.pedido-card input {
+.login-card input {
     width: 100%;
-    padding: 8px;
-    margin-bottom: 12px;
+    padding: 10px;
+    margin-top: 6px;
     border-radius: 6px;
     border: none;
     background: #222;
     color: #fff;
 }
 
-.pedido-resumen {
+/* ============================
+   CONTENEDORES GENERALES
+============================ */
+.menu-container,
+.pedido-container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 40px 20px;
+}
+
+/* ============================
+   ENCABEZADOS
+============================ */
+.menu-header,
+.pedido-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.menu-header h1,
+.pedido-header h1 {
+    font-size: 26px;
+    text-transform: uppercase;
+    letter-spacing: 4px;
+}
+
+/* ============================
+   GRID GENERAL
+============================ */
+.menu-grid,
+.pedido-grid {
     margin-top: 40px;
+    display: grid;
+    gap: 20px;
+}
+
+/* 3 columnas en pantallas grandes */
+.menu-grid,
+.pedido-grid {
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+}
+
+/* ============================
+   TARJETAS
+============================ */
+.menu-card,
+.pedido-card,
+.historial-card {
     background: #1a1a1a;
-    padding: 20px;
     border-radius: 12px;
+    padding: 20px;
     border: 1px solid #333;
 }
 
-.pedido-lista {
-    margin-bottom: 20px;
+.menu-card:hover {
+    border-color: #ffb347;
 }
 
-.pedido-item {
-    display: flex;
-    justify-content: space-between;
-    padding: 6px 0;
-    border-bottom: 1px solid #333;
-}
-
-.pedido-total {
-    margin-bottom: 20px;
-}
-
-.pedido-confirmar {
+.menu-img,
+.pedido-img {
     width: 100%;
-}
-.menu-header div {
-    display: flex;
-    gap: 10px;
-}
-
-.menu-img {
-    width: 100%;
-    height: 140px;
+    height: 150px;
     object-fit: cover;
     border-radius: 10px;
     margin-bottom: 10px;
 }
 
-.menu-actions {
-    margin-top: 12px;
-    display: flex;
-    justify-content: space-between;
+/* ============================
+   PEDIDOS
+============================ */
+.pedido-info h3 {
+    margin-bottom: 6px;
 }
-.menu-header {
+
+.pedido-cantidad {
     display: flex;
-    justify-content: space-between;
     align-items: center;
+    gap: 10px;
+    margin: 10px 0;
 }
+
+.pedido-footer {
+    margin-top: 30px;
+    text-align: center;
+}
+
+/* ============================
+   HISTORIAL
+============================ */
 .historial-lista {
     display: flex;
     flex-direction: column;
@@ -314,35 +238,16 @@ body {
 }
 
 .historial-card {
-    background: #1a1a1a;
-    padding: 20px;
-    border-radius: 12px;
-    border: 1px solid #333;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    flex-wrap: wrap;
+    gap: 15px;
 }
 
-.historial-info h3 {
-    margin-bottom: 6px;
-}
-
-.historial-info p {
-    font-size: 13px;
-    color: #ccc;
-}
-
-.historial-info ul {
-    margin-top: 6px;
-    margin-left: 20px;
-    color: #bbb;
-    font-size: 13px;
-}
-
-.historial-total h3 {
-    color: #ffb347;
-    font-size: 18px;
-}
+/* ============================
+   MODAL
+============================ */
 .modal {
     position: fixed;
     top: 0;
@@ -359,17 +264,47 @@ body {
     background: #1a1a1a;
     padding: 25px;
     border-radius: 12px;
-    width: 380px;
+    width: 90%;
+    max-width: 380px;
     border: 1px solid #333;
 }
 
-.modal-content input,
-.modal-content textarea {
-    width: 100%;
-    margin-bottom: 12px;
-    padding: 10px;
-    border-radius: 6px;
-    border: none;
-    background: #222;
-    color: white;
+/* ============================
+   RESPONSIVE
+============================ */
+
+/* Tablets */
+@media (max-width: 900px) {
+    .menu-header,
+    .pedido-header {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .menu-grid,
+    .pedido-grid {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    }
+}
+
+/* Móviles */
+@media (max-width: 600px) {
+    .hero-text h1 {
+        font-size: 32px;
+    }
+
+    .menu-grid,
+    .pedido-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .menu-container,
+    .pedido-container {
+        padding: 20px 10px;
+    }
+
+    .historial-card {
+        flex-direction: column;
+        text-align: center;
+    }
 }
