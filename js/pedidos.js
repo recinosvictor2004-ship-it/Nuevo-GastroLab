@@ -7,7 +7,7 @@ const btnConfirmar = document.getElementById("btn-confirmar");
 const inputNombre = document.getElementById("cliente-nombre");
 const inputTelefono = document.getElementById("cliente-telefono");
 
-let carrito = {}; // { idPlatillo: { nombre, precio, cantidad, ingredientes } }
+let carrito = {}; 
 
 // ===============================
 // CARGAR PLATILLOS
@@ -41,7 +41,7 @@ function cargarPlatillos() {
 }
 
 // ===============================
-// SUMAR / RESTAR CANTIDAD
+// SUMAR / RESTAR
 // ===============================
 window.sumar = (id) => {
     const span = document.getElementById(`cant-${id}`);
@@ -115,20 +115,45 @@ function validarInventario() {
 }
 
 // ===============================
-// DESCONTAR INVENTARIO
+// DESCONTAR INVENTARIO + REPORTE
 // ===============================
 function descontarInventario() {
     const inventario = getCollection("inventario");
+    let reporte = "Insumos descontados:\n\n";
 
     Object.values(carrito).forEach(item => {
         item.ingredientes.forEach(ing => {
             const insumo = inventario.find(i => i.id === ing.insumoID);
             const requerido = ing.cantidad * item.cantidad;
+
             insumo.cantidad -= requerido;
+
+            reporte += `- ${insumo.nombre}: -${requerido} ${insumo.unidad}\n`;
         });
     });
 
     saveCollection("inventario", inventario);
+
+    return reporte;
+}
+
+// ===============================
+// REPORTE DE INSUMOS POR AGOTARSE
+// ===============================
+function reporteAgotados() {
+    const inventario = getCollection("inventario");
+
+    const bajos = inventario.filter(i => i.cantidad <= 2);
+
+    if (bajos.length === 0) return "Todos los insumos están en buen nivel.";
+
+    let texto = "\n⚠ Insumos por agotarse:\n\n";
+
+    bajos.forEach(i => {
+        texto += `- ${i.nombre}: ${i.cantidad} ${i.unidad}\n`;
+    });
+
+    return texto;
 }
 
 // ===============================
@@ -148,7 +173,8 @@ btnConfirmar.addEventListener("click", () => {
 
     if (!validarInventario()) return;
 
-    descontarInventario();
+    const reporteDescuento = descontarInventario();
+    const reporteBajos = reporteAgotados();
 
     const pedidos = getCollection("pedidos");
 
@@ -165,13 +191,23 @@ btnConfirmar.addEventListener("click", () => {
 
     saveCollection("pedidos", pedidos);
 
-    alert("Pedido creado correctamente");
+    alert(
+        "Pedido creado correctamente\n\n" +
+        reporteDescuento +
+        "\n" +
+        reporteBajos
+    );
 
     carrito = {};
     inputNombre.value = "";
     inputTelefono.value = "";
     cargarPlatillos();
     actualizarTotal();
+
+    // 🔥 ACTUALIZAR INVENTARIO AUTOMÁTICAMENTE SI ESTÁ ABIERTO
+    if (window.opener && window.opener.location.pathname.includes("inventario.html")) {
+        window.opener.location.reload();
+    }
 });
 
 // Ejecutar
