@@ -21,14 +21,22 @@
 
         <!-- GRID DINÁMICO DE INSUMOS -->
         <section class="menu-grid" id="insumos-grid">
-            <!-- Aquí se cargarán los insumos desde Firestore -->
+            <!-- Aquí se cargarán los insumos -->
         </section>
 
     </div>
 
-    <!-- ORDEN CORRECTO DE SCRIPTS -->
+    <!-- PROTECCIÓN DE SESIÓN -->
+    <script>
+        if (localStorage.getItem("sesion") !== "activa") {
+            window.location.href = "index.html";
+        }
+    </script>
+
+    <!-- SCRIPTS -->
     <script type="module" src="js/storage.js"></script>
     <script type="module" src="js/inventario.js"></script>
 
+    
 </body>
 </html>

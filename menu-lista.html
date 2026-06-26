@@ -21,14 +21,22 @@
 
         <!-- GRID DE PLATILLOS (DINÁMICO) -->
         <section class="menu-grid" id="platillos-grid">
-            <!-- Aquí se cargan los platillos desde Firestore -->
+            <!-- Aquí se cargan los platillos -->
         </section>
 
     </div>
 
-    <!-- ORDEN CORRECTO DE SCRIPTS -->
-    <script type="module" src="js/storage.js"></script>
-    <script type="module" src="js/platillos.js"></script>
+    <!-- PROTECCIÓN DE SESIÓN -->
+    <script>
+        if (localStorage.getItem("sesion") !== "activa") {
+            window.location.href = "index.html";
+        }
+    </script>
 
+    <!-- SCRIPTS -->
+    <script type="module" src="js/storage.js"></script>
+    <script type="module" src="js/menu-lista.js"></script>
+
+    
 </body>
 </html>
