@@ -1,34 +1,10 @@
-import { 
-    getCollection, 
-    saveCollection 
-} from "./storage.js";
+import { getCollection, saveCollection } from "./storage.js";
 
 const lista = document.getElementById("lista-platillos");
 const totalSpan = document.getElementById("total");
 const btnConfirmar = document.getElementById("btn-confirmar");
 
-let carrito = {}; // idPlatillo → cantidad
-
-// ===============================
-// RECETAS FIJAS
-// ===============================
-const recetas = {
-    "Pizza Margarita": {
-        queso: 0.2,
-        tomate: 0.1,
-        harina: 0.15
-    },
-    "Hamburguesa Clásica": {
-        carne: 0.2,
-        pan: 1,
-        queso: 0.05
-    },
-    "Tacos al Pastor": {
-        tortillas: 3,
-        carne: 0.15,
-        piña: 0.05
-    }
-};
+let carrito = {}; // { idPlatillo: { nombre, precio, cantidad } }
 
 // ===============================
 // CARGAR PLATILLOS
@@ -41,43 +17,90 @@ function cargarPlatillos() {
         lista.innerHTML += `
             <div class="pedido-card">
                 <img src="${p.imagen}" class="pedido-img">
-                <h3>${p.nombre}</h3>
-                <p>Q ${p.precio}</p>
 
-                <input type="number" min="0" value="0"
-                    onchange="actualizarCantidad('${p.id}', '${p.nombre}', ${p.precio}, this.value)">
+                <div class="pedido-info">
+                    <h3>${p.nombre}</h3>
+                    <p>Q ${p.precio}</p>
+
+                    <div class="pedido-cantidad">
+                        <button class="btn-danger" onclick="restar('${p.id}')">-</button>
+                        <span id="cant-${p.id}">0</span>
+                        <button class="btn-primary" onclick="sumar('${p.id}')">+</button>
+                    </div>
+
+                    <button class="btn-primary" onclick="agregar('${p.id}')">
+                        Agregar al pedido
+                    </button>
+                </div>
             </div>
         `;
     });
 }
 
 // ===============================
-// ACTUALIZAR CANTIDAD
+// SUMAR / RESTAR CANTIDAD
 // ===============================
-function actualizarCantidad(id, nombre, precio, cantidad) {
-    cantidad = Number(cantidad);
+window.sumar = (id) => {
+    const span = document.getElementById(`cant-${id}`);
+    span.textContent = Number(span.textContent) + 1;
+};
 
-    if (cantidad <= 0) {
-        delete carrito[id];
-    } else {
-        carrito[id] = { nombre, precio, cantidad };
-    }
-
-    calcularTotal();
-}
+window.restar = (id) => {
+    const span = document.getElementById(`cant-${id}`);
+    const val = Number(span.textContent);
+    if (val > 0) span.textContent = val - 1;
+};
 
 // ===============================
-// CALCULAR TOTAL
+// AGREGAR AL CARRITO
 // ===============================
-function calcularTotal() {
+window.agregar = (id) => {
+    const platillos = getCollection("platillos");
+    const p = platillos.find(x => x.id === id);
+
+    const cantidad = Number(document.getElementById(`cant-${id}`).textContent);
+    if (cantidad === 0) return;
+
+    carrito[id] = {
+        nombre: p.nombre,
+        precio: p.precio,
+        cantidad,
+        ingredientes: p.ingredientes
+    };
+
+    actualizarTotal();
+};
+
+// ===============================
+// ACTUALIZAR TOTAL
+// ===============================
+function actualizarTotal() {
     let total = 0;
 
     Object.values(carrito).forEach(item => {
         total += item.precio * item.cantidad;
     });
 
-    totalSpan.textContent = total;
-    return total;
+    totalSpan.textContent = total.toFixed(2);
+}
+
+// ===============================
+// DESCONTAR INVENTARIO
+// ===============================
+function descontarInventario() {
+    const inventario = getCollection("inventario");
+
+    Object.values(carrito).forEach(item => {
+        item.ingredientes.forEach(ing => {
+            const insumo = inventario.find(i => i.id === ing.insumoID);
+            if (!insumo) return;
+
+            const cantidadNecesaria = ing.cantidad * item.cantidad;
+            insumo.cantidad -= cantidadNecesaria;
+        });
+    });
+
+    saveCollection("inventario", inventario);
 }
 
 // ===============================
@@ -85,59 +108,29 @@ function calcularTotal() {
 // ===============================
 btnConfirmar.addEventListener("click", () => {
     if (Object.keys(carrito).length === 0) {
-        alert("No hay platillos seleccionados");
+        alert("No hay platillos en el pedido");
         return;
     }
 
-    // VALIDAR INVENTARIO
-    const inventario = getCollection("inventario");
+    descontarInventario();
 
-    for (const item of Object.values(carrito)) {
-        const receta = recetas[item.nombre];
-
-        for (const ing in receta) {
-            const requerido = receta[ing] * item.cantidad;
-
-            const ingrediente = inventario.find(i => i.nombre.toLowerCase() === ing);
-
-            if (!ingrediente || ingrediente.cantidad < requerido) {
-                alert(`No hay suficiente ${ing} para ${item.nombre}`);
-                return;
-            }
-        }
-    }
-
-    // DESCONTAR INVENTARIO
-    inventario.forEach(i => {
-        for (const item of Object.values(carrito)) {
-            const receta = recetas[item.nombre];
-            if (receta[i.nombre.toLowerCase()]) {
-                i.cantidad -= receta[i.nombre.toLowerCase()] * item.cantidad;
-            }
-        }
-    });
-
-    saveCollection("inventario", inventario);
-
-    // GUARDAR PEDIDO
     const pedidos = getCollection("pedidos");
 
     pedidos.push({
-        id: crypto.randomUUID(),
+        id: Date.now(),
         fecha: new Date().toLocaleString(),
         items: carrito,
-        total: calcularTotal()
+        total: Number(totalSpan.textContent)
     });
 
     saveCollection("pedidos", pedidos);
 
-    alert("Pedido realizado con éxito");
+    alert("Pedido guardado correctamente");
 
     carrito = {};
-    totalSpan.textContent = 0;
-    lista.innerHTML = "";
     cargarPlatillos();
+    actualizarTotal();
 });
 
-// Ejecutar al cargar
+// Ejecutar
 cargarPlatillos();
