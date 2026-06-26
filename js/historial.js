@@ -4,7 +4,7 @@ import {
     getDocs,
     query,
     orderBy
-} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+} from "firebase/firestore";
 
 const contenedor = document.querySelector(".historial-lista");
 
@@ -28,36 +28,54 @@ function formatearFecha(timestamp) {
 // CARGAR HISTORIAL
 // ===============================
 async function cargarHistorial() {
-    contenedor.innerHTML = "";
+    try {
+        contenedor.innerHTML = "";
 
-    // Pedidos ordenados por fecha descendente
-    const q = query(collection(db, "pedidos"), orderBy("fecha", "desc"));
-    const snap = await getDocs(q);
+        const q = query(collection(db, "pedidos"), orderBy("fecha", "desc"));
+        const snap = await getDocs(q);
 
-    snap.forEach(p => {
-        const data = p.data();
+        if (snap.empty) {
+            contenedor.innerHTML = `
+                <p style="text-align:center; color:#ccc; margin-top:20px;">
+                    No hay pedidos registrados
+                </p>
+            `;
+            return;
+        }
 
-        // Lista de platillos
-        const platillosHTML = data.platillos
-            .map(pl => `<li>${pl.nombre} (${pl.cantidad}) — Q ${pl.subtotal}</li>`)
-            .join("");
+        snap.forEach(p => {
+            const data = p.data();
 
-        // Renderizar tarjeta
-        contenedor.innerHTML += `
-            <div class="historial-card">
-                <div class="historial-info">
-                    <h3>Pedido</h3>
-                    <p>Fecha: ${formatearFecha(data.fecha)}</p>
-                    <p>Platillos:</p>
-                    <ul>${platillosHTML}</ul>
+            const platillos = Array.isArray(data.platillos) ? data.platillos : [];
+
+            const platillosHTML = platillos
+                .map(pl => `<li>${pl.nombre} (${pl.cantidad}) — Q ${pl.subtotal.toFixed(2)}</li>`)
+                .join("");
+
+            contenedor.innerHTML += `
+                <div class="historial-card">
+                    <div class="historial-info">
+                        <h3>Pedido</h3>
+                        <p>Fecha: ${formatearFecha(data.fecha)}</p>
+                        <p>Platillos:</p>
+                        <ul>${platillosHTML}</ul>
+                    </div>
+
+                    <div class="historial-total">
+                        <h3>Total: Q ${Number(data.total).toFixed(2)}</h3>
+                    </div>
                 </div>
+            `;
+        });
 
-                <div class="historial-total">
-                    <h3>Total: Q ${data.total}</h3>
-                </div>
-            </div>
+    } catch (error) {
+        console.error("Error al cargar historial:", error);
+        contenedor.innerHTML = `
+            <p style="text-align:center; color:red; margin-top:20px;">
+                Error al cargar el historial
+            </p>
         `;
-    });
+    }
 }
 
 cargarHistorial();

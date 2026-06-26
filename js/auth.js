@@ -2,19 +2,23 @@ import { auth } from "./firebase.js";
 import { onAuthStateChanged, signOut } from "firebase/auth";
 
 // ===============================
-// VERIFICAR SI EL USUARIO ESTÁ LOGUEADO
+// PROTECCIÓN DE RUTAS
 // ===============================
 onAuthStateChanged(auth, (user) => {
-    const paginaActual = window.location.pathname;
+    const pagina = window.location.pathname;
 
-    // Si NO hay usuario y NO estamos en login.html → redirigir
-    if (!user && !paginaActual.includes("login.html")) {
+    const esLogin = pagina.includes("login.html") || pagina.endsWith("/") || pagina.endsWith("index.html");
+
+    // Si NO hay usuario y NO estamos en login → redirigir
+    if (!user && !esLogin) {
         window.location.href = "login.html";
+        return;
     }
 
-    // Si SÍ hay usuario y estamos en login.html → ir al menú
-    if (user && paginaActual.includes("login.html")) {
+    // Si SÍ hay usuario y estamos en login → ir al menú
+    if (user && esLogin) {
         window.location.href = "menu.html";
+        return;
     }
 });
 
@@ -25,7 +29,12 @@ const logoutBtn = document.getElementById("logout-btn");
 
 if (logoutBtn) {
     logoutBtn.addEventListener("click", async () => {
-        await signOut(auth);
-        window.location.href = "login.html";
+        try {
+            await signOut(auth);
+            window.location.href = "login.html";
+        } catch (error) {
+            console.error("Error al cerrar sesión:", error);
+            alert("No se pudo cerrar sesión");
+        }
     });
 }
