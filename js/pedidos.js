@@ -4,7 +4,7 @@ const lista = document.getElementById("lista-platillos");
 const totalSpan = document.getElementById("total");
 const btnConfirmar = document.getElementById("btn-confirmar");
 
-let carrito = {}; // { idPlatillo: { nombre, precio, cantidad } }
+let carrito = {}; // { idPlatillo: { nombre, precio, cantidad, ingredientes } }
 
 // ===============================
 // CARGAR PLATILLOS
@@ -125,7 +125,7 @@ btnConfirmar.addEventListener("click", () => {
 
     saveCollection("pedidos", pedidos);
 
-    alert("Pedido guardado correctamente");
+    alert("Pedido creado correctamente");
 
     carrito = {};
     cargarPlatillos();
