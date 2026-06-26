@@ -7,13 +7,11 @@ function generarReporteVentas(fechaInicio, fechaFin) {
     const inicio = new Date(fechaInicio);
     const fin = new Date(fechaFin);
 
-    // Filtrar ventas por rango
     const ventasFiltradas = ventas.filter(v => {
         const fechaVenta = new Date(v.fecha);
         return fechaVenta >= inicio && fechaVenta <= fin;
     });
 
-    // Agrupar ventas por platillo
     const resumen = {};
 
     ventasFiltradas.forEach(v => {
@@ -43,10 +41,16 @@ document.getElementById("btnGenerar").addEventListener("click", () => {
     const inicio = document.getElementById("fechaInicio").value;
     const fin = document.getElementById("fechaFin").value;
 
+    // VALIDACIÓN: NO PERMITIR SI FALTAN FECHAS
+    if (!inicio || !fin) {
+        alert("Debe seleccionar ambas fechas para generar el reporte.");
+        return;
+    }
+
     const { totalGeneral, resumen } = generarReporteVentas(inicio, fin);
 
     let html = `
-        <h3>Total General de Ventas: Q${totalGeneral.toFixed(2)}</h3>
+        <h3 style="color:black;">Total General de Ventas: Q${totalGeneral.toFixed(2)}</h3>
 
         <table class="tabla-reporte">
             <thead>
