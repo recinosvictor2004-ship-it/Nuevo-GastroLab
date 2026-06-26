@@ -366,13 +366,32 @@ body {
     }
 }
 
+/* ============================
+   GRID DEL MENÚ (CORREGIDO)
+============================ */
+.menu-grid {
+    margin-top: 40px;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(220px, 1fr));
+    gap: 20px;
+}
+
+/* SOLO PARA PEDIDOS */
+.pedido-grid {
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+}
+
+/* ============================
+   REPORTE (CORREGIDO)
+============================ */
 .reporte-box {
     background: #fff;
     padding: 20px;
     border-radius: 12px;
     box-shadow: 0 0 10px #0002;
     max-width: 900px;
-    margin: auto;
+    margin: 60px auto;
+    color: black;
 }
 
 .filtros {
@@ -388,20 +407,14 @@ body {
     margin-top: 20px;
 }
 
-.tabla-reporte th, .tabla-reporte td {
+.tabla-reporte th, 
+.tabla-reporte td {
     border: 1px solid #ddd;
     padding: 10px;
+    color: black;
 }
 
 .tabla-reporte th {
     background: #f0f0f0;
 }
-.reporte-box {
-    background: #fff;
-    padding: 20px;
-    border-radius: 12px;
-    box-shadow: 0 0 10px #0002;
-    max-width: 900px;
-    margin: 60px auto; /* ← MÁS ABAJO */
-    color: black; /* ← TEXTO NEGRO */
-}
+
