@@ -5,172 +5,147 @@ import {
     addDoc,
     updateDoc,
     doc,
-    serverTimestamp,
     getDoc
 } from "firebase/firestore";
 
-const grid = document.querySelector(".pedido-grid");
-const resumenLista = document.querySelector(".pedido-lista");
-const totalTexto = document.querySelector(".pedido-total h3");
-const btnConfirmar = document.querySelector(".pedido-confirmar");
+const lista = document.getElementById("lista-platillos");
+const totalSpan = document.getElementById("total");
+const btnConfirmar = document.getElementById("btn-confirmar");
 
-let platillos = [];
-let pedidoActual = [];
+let carrito = {}; // idPlatillo → cantidad
+
+// ===============================
+// RECETAS FIJAS
+// ===============================
+const recetas = {
+    "Pizza Margarita": {
+        queso: 0.2,
+        tomate: 0.1,
+        harina: 0.15
+    },
+    "Hamburguesa Clásica": {
+        carne: 0.2,
+        pan: 1,
+        queso: 0.05
+    },
+    "Tacos al Pastor": {
+        tortillas: 3,
+        carne: 0.15,
+        piña: 0.05
+    }
+};
 
 // ===============================
 // CARGAR PLATILLOS
 // ===============================
 async function cargarPlatillos() {
-    try {
-        grid.innerHTML = ""; // evitar duplicados
+    const snap = await getDocs(collection(db, "platillos"));
 
-        const snap = await getDocs(collection(db, "platillos"));
+    snap.forEach(p => {
+        const data = p.data();
 
-        platillos = snap.docs.map(d => ({
-            id: d.id,
-            ...d.data()
-        }));
+        lista.innerHTML += `
+            <div class="pedido-card">
+                <img src="${data.imagen}" class="pedido-img">
+                <h3>${data.nombre}</h3>
+                <p>Q ${data.precio}</p>
 
-        // Ordenar por nombre
-        platillos.sort((a, b) => a.nombre.localeCompare(b.nombre));
-
-        platillos.forEach(data => {
-            grid.innerHTML += `
-                <div class="pedido-card">
-                    <h3>${data.nombre}</h3>
-                    <p>${data.descripcion || "Sin descripción"}</p>
-
-                    <label>Cantidad</label>
-                    <input type="number" min="0" id="cant-${data.id}" placeholder="0">
-
-                    <button class="btn-primary" onclick="agregar('${data.id}')">Agregar</button>
-                </div>
-            `;
-        });
-
-    } catch (error) {
-        console.error("Error al cargar platillos:", error);
-        alert("Error al cargar platillos");
-    }
-}
-
-// ===============================
-// AGREGAR AL PEDIDO
-// ===============================
-window.agregar = (id) => {
-    const input = document.getElementById(`cant-${id}`);
-    const cantidad = Number(input.value);
-
-    if (cantidad <= 0) return;
-
-    const platillo = platillos.find(p => p.id === id);
-    if (!platillo) return;
-
-    // Evitar duplicados
-    const existente = pedidoActual.find(p => p.id === id);
-    if (existente) {
-        existente.cantidad += cantidad;
-        existente.subtotal = existente.cantidad * platillo.precio;
-    } else {
-        pedidoActual.push({
-            id,
-            nombre: platillo.nombre,
-            cantidad,
-            subtotal: platillo.precio * cantidad,
-            ingredientes: platillo.ingredientes || []
-        });
-    }
-
-    actualizarResumen();
-    input.value = "";
-};
-
-// ===============================
-// ACTUALIZAR RESUMEN
-// ===============================
-function actualizarResumen() {
-    resumenLista.innerHTML = "";
-
-    let total = 0;
-
-    pedidoActual.forEach(p => {
-        total += p.subtotal;
-
-        resumenLista.innerHTML += `
-            <div class="pedido-item">
-                <span>${p.nombre} (${p.cantidad})</span>
-                <span>Q ${p.subtotal.toFixed(2)}</span>
+                <input type="number" min="0" value="0"
+                    onchange="actualizarCantidad('${p.id}', '${data.nombre}', ${data.precio}, this.value)">
             </div>
         `;
     });
-
-    totalTexto.textContent = `Total: Q ${total.toFixed(2)}`;
 }
 
-// ===============================
-// DESCONTAR INVENTARIO
-// ===============================
-async function descontarInventario() {
-    for (const item of pedidoActual) {
-        for (const ing of item.ingredientes) {
-            try {
-                const ref = doc(db, "insumos", ing.insumoID);
-                const snap = await getDoc(ref);
+window.actualizarCantidad = (id, nombre, precio, cantidad) => {
+    cantidad = Number(cantidad);
 
-                if (!snap.exists()) {
-                    console.warn("Insumo no encontrado:", ing.insumoID);
-                    continue;
-                }
-
-                const data = snap.data();
-                const cantidadNecesaria = Number(ing.cantidad) * item.cantidad;
-
-                const nuevaCantidad = Math.max(0, Number(data.cantidad) - cantidadNecesaria);
-
-                await updateDoc(ref, { cantidad: nuevaCantidad });
-
-            } catch (error) {
-                console.error("Error descontando inventario:", error);
-            }
-        }
+    if (cantidad <= 0) {
+        delete carrito[id];
+    } else {
+        carrito[id] = { nombre, precio, cantidad };
     }
+
+    calcularTotal();
+};
+
+// ===============================
+// CALCULAR TOTAL
+// ===============================
+function calcularTotal() {
+    let total = 0;
+
+    Object.values(carrito).forEach(item => {
+        total += item.precio * item.cantidad;
+    });
+
+    totalSpan.textContent = total;
 }
 
 // ===============================
 // CONFIRMAR PEDIDO
 // ===============================
 btnConfirmar.addEventListener("click", async () => {
-    if (pedidoActual.length === 0) {
-        alert("No hay platillos en el pedido");
+    if (Object.keys(carrito).length === 0) {
+        alert("No hay platillos seleccionados");
         return;
     }
 
-    btnConfirmar.disabled = true;
-    btnConfirmar.textContent = "Guardando...";
+    // VALIDAR INVENTARIO
+    const inventarioSnap = await getDocs(collection(db, "inventario"));
+    let inventario = {};
 
-    try {
-        const total = pedidoActual.reduce((acc, p) => acc + p.subtotal, 0);
+    inventarioSnap.forEach(i => {
+        inventario[i.data().nombre.toLowerCase()] = {
+            id: i.id,
+            cantidad: i.data().cantidad,
+            unidad: i.data().unidad
+        };
+    });
 
-        await addDoc(collection(db, "pedidos"), {
-            fecha: serverTimestamp(),
-            platillos: pedidoActual,
-            total
-        });
+    // Verificar si alcanza el inventario
+    for (const item of Object.values(carrito)) {
+        const receta = recetas[item.nombre];
 
-        await descontarInventario();
+        for (const ing in receta) {
+            const requerido = receta[ing] * item.cantidad;
 
-        alert("Pedido registrado y inventario actualizado");
-
-        pedidoActual = [];
-        actualizarResumen();
-
-    } catch (error) {
-        console.error("Error al confirmar pedido:", error);
-        alert("Error al registrar el pedido");
+            if (!inventario[ing] || inventario[ing].cantidad < requerido) {
+                alert(`No hay suficiente ${ing} para ${item.nombre}`);
+                return;
+            }
+        }
     }
 
-    btnConfirmar.disabled = false;
-    btnConfirmar.textContent = "Confirmar Pedido";
+    // DESCONTAR INVENTARIO
+    for (const item of Object.values(carrito)) {
+        const receta = recetas[item.nombre];
+
+        for (const ing in receta) {
+            const requerido = receta[ing] * item.cantidad;
+            const inv = inventario[ing];
+
+            await updateDoc(doc(db, "inventario", inv.id), {
+                cantidad: inv.cantidad - requerido
+            });
+        }
+    }
+
+    // GUARDAR PEDIDO
+    const pedido = {
+        fecha: new Date(),
+        items: carrito,
+        total: Number(totalSpan.textContent)
+    };
+
+    await addDoc(collection(db, "pedidos"), pedido);
+    await addDoc(collection(db, "historial"), pedido);
+
+    alert("Pedido realizado con éxito");
+    carrito = {};
+    totalSpan.textContent = 0;
+    lista.innerHTML = "";
+    cargarPlatillos();
 });
 
 cargarPlatillos();
