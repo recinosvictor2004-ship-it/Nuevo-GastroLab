@@ -53,7 +53,7 @@ body {
     flex: 1;
     display: flex;
     align-items: center;
-    justify-content: center; /* CENTRA TODO */
+    justify-content: center;
     padding: 20px;
     text-align: center;
 }
@@ -83,7 +83,7 @@ body {
 }
 
 /* ============================
-   BOTONES
+   BOTONES (COLOR ORIGINAL)
 ============================ */
 .btn-primary,
 .btn-danger {
@@ -96,6 +96,7 @@ body {
     transition: 0.2s;
 }
 
+/* DORADO ORIGINAL */
 .btn-primary {
     border: 1px solid #ffb347;
     background: transparent;
@@ -107,6 +108,7 @@ body {
     color: #111;
 }
 
+/* ROJO ORIGINAL */
 .btn-danger {
     border: 1px solid #b33;
     background: transparent;
@@ -146,7 +148,7 @@ body {
 .pedido-container {
     max-width: 1100px;
     margin: 0 auto;
-    padding: 40px 20px;
+    padding: 40px 60px; /* ← TAMAÑO ORIGINAL */
 }
 
 /* ============================
@@ -157,8 +159,6 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    flex-wrap: wrap;
-    gap: 15px;
 }
 
 .menu-header h1,
@@ -169,41 +169,39 @@ body {
 }
 
 /* ============================
-   GRID GENERAL
+   GRID DEL MENÚ (DISEÑO ORIGINAL)
 ============================ */
-.menu-grid,
-.pedido-grid {
+.menu-grid {
     margin-top: 40px;
     display: grid;
+    grid-template-columns: repeat(2, minmax(220px, 1fr)); /* ← EXACTO COMO ANTES */
     gap: 20px;
 }
 
-/* 3 columnas en pantallas grandes */
-.menu-grid,
-.pedido-grid {
-    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-}
-
 /* ============================
-   TARJETAS
+   TARJETAS DEL MENÚ (ORIGINAL)
 ============================ */
-.menu-card,
-.pedido-card,
-.historial-card {
+.menu-card {
     background: #1a1a1a;
     border-radius: 12px;
     padding: 20px;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    color: #f5f5f5;
+    text-transform: uppercase;
+    letter-spacing: 2px;
     border: 1px solid #333;
+    transition: 0.2s;
 }
 
 .menu-card:hover {
     border-color: #ffb347;
 }
 
-.menu-img,
-.pedido-img {
+.menu-img {
     width: 100%;
-    height: 150px;
+    height: 140px; /* ← TAMAÑO ORIGINAL */
     object-fit: cover;
     border-radius: 10px;
     margin-bottom: 10px;
@@ -212,20 +210,25 @@ body {
 /* ============================
    PEDIDOS
 ============================ */
-.pedido-info h3 {
-    margin-bottom: 6px;
+.pedido-grid {
+    margin-top: 40px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 20px;
 }
 
-.pedido-cantidad {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin: 10px 0;
+.pedido-card {
+    background: #1a1a1a;
+    padding: 20px;
+    border-radius: 12px;
+    border: 1px solid #333;
 }
 
-.pedido-footer {
-    margin-top: 30px;
-    text-align: center;
+.pedido-img {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 10px;
 }
 
 /* ============================
@@ -238,11 +241,10 @@ body {
 }
 
 .historial-card {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 15px;
+    background: #1a1a1a;
+    padding: 20px;
+    border-radius: 12px;
+    border: 1px solid #333;
 }
 
 /* ============================
@@ -279,32 +281,23 @@ body {
     .pedido-header {
         flex-direction: column;
         text-align: center;
+        gap: 20px;
     }
 
-    .menu-grid,
-    .pedido-grid {
-        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    .menu-container,
+    .pedido-container {
+        padding: 30px 20px;
     }
 }
 
 /* Móviles */
 @media (max-width: 600px) {
-    .hero-text h1 {
-        font-size: 32px;
-    }
-
-    .menu-grid,
-    .pedido-grid {
-        grid-template-columns: 1fr;
+    .menu-grid {
+        grid-template-columns: 1fr; /* SOLO EN MÓVIL */
     }
 
     .menu-container,
     .pedido-container {
-        padding: 20px 10px;
-    }
-
-    .historial-card {
-        flex-direction: column;
-        text-align: center;
+        padding: 20px;
     }
 }
