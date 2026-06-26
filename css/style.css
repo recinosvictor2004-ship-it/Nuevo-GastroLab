@@ -366,3 +366,33 @@ body {
     }
 }
 
+.reporte-box {
+    background: #fff;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 0 10px #0002;
+    max-width: 900px;
+    margin: auto;
+}
+
+.filtros {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    align-items: center;
+}
+
+.tabla-reporte {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.tabla-reporte th, .tabla-reporte td {
+    border: 1px solid #ddd;
+    padding: 10px;
+}
+
+.tabla-reporte th {
+    background: #f0f0f0;
+}
