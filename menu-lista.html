@@ -19,11 +19,37 @@
             </div>
         </header>
 
-        <!-- GRID DE PLATILLOS (DINÁMICO) -->
+        <!-- GRID DE PLATILLOS -->
         <section class="menu-grid" id="platillos-grid">
             <!-- Aquí se cargan los platillos -->
         </section>
 
+    </div>
+
+    <!-- MODAL PARA EDITAR -->
+    <div id="modal-editar" class="modal" style="display:none;">
+        <div class="modal-content">
+
+            <h2>Editar Platillo</h2>
+
+            <label>Nombre</label>
+            <input type="text" id="edit-nombre">
+
+            <label>Descripción</label>
+            <input type="text" id="edit-descripcion">
+
+            <label>Precio</label>
+            <input type="number" id="edit-precio">
+
+            <label>URL de Imagen</label>
+            <input type="text" id="edit-imagen">
+
+            <div class="modal-actions">
+                <button id="btn-guardar-cambios" class="btn-primary">Guardar</button>
+                <button id="btn-cerrar-modal" class="btn-danger">Cerrar</button>
+            </div>
+
+        </div>
     </div>
 
     <!-- PROTECCIÓN DE SESIÓN -->
@@ -37,6 +63,5 @@
     <script type="module" src="js/storage.js"></script>
     <script type="module" src="js/menu-lista.js"></script>
 
-    
 </body>
 </html>
