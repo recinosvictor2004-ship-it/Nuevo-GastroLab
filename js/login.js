@@ -1,24 +1,16 @@
-import { auth } from "./firebase.js";
-import { signInWithEmailAndPassword } from "firebase/auth";
+const usuarioFijo = "admin";
+const passwordFijo = "1234";
 
-const form = document.getElementById("login-form");
-
-form.addEventListener("submit", async (e) => {
+document.getElementById("login-form").addEventListener("submit", (e) => {
     e.preventDefault();
 
-    const email = document.getElementById("email").value.trim();
-    const password = document.getElementById("password").value.trim();
+    const email = document.getElementById("email").value;
+    const pass = document.getElementById("password").value;
 
-    try {
-        await signInWithEmailAndPassword(auth, email, password);
+    if (email === usuarioFijo && pass === passwordFijo) {
+        localStorage.setItem("sesion", "activa");
         window.location.href = "menu.html";
-    } catch (err) {
-        console.error("Error al iniciar sesión:", err);
-
-        if (err.code === "auth/invalid-credential") {
-            alert("Correo o contraseña incorrectos");
-        } else {
-            alert("No se pudo iniciar sesión");
-        }
+    } else {
+        alert("Usuario o contraseña incorrectos");
     }
 });
