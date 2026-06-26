@@ -12,6 +12,17 @@ import {
 const lista = document.querySelector(".menu-grid");
 const btnAgregar = document.querySelector('.menu-header a[href="#"]');
 
+// ELEMENTOS DEL MODAL
+const modal = document.getElementById("modal-editar");
+const editNombre = document.getElementById("edit-nombre");
+const editDescripcion = document.getElementById("edit-descripcion");
+const editPrecio = document.getElementById("edit-precio");
+const editImagen = document.getElementById("edit-imagen");
+const btnGuardar = document.getElementById("btn-guardar-cambios");
+const btnCerrar = document.getElementById("btn-cerrar-modal");
+
+let idEditando = null;
+
 // ===============================
 // CARGAR PLATILLOS
 // ===============================
@@ -39,38 +50,47 @@ async function cargarPlatillos() {
 }
 
 // ===============================
-// AGREGAR PLATILLO
+// ABRIR MODAL PARA EDITAR
 // ===============================
-btnAgregar.addEventListener("click", async (e) => {
-    e.preventDefault();
+window.editarPlatillo = async (id) => {
+    idEditando = id;
 
-    const nombre = prompt("Nombre del platillo:");
-    const descripcion = prompt("Descripción:");
-    const precio = Number(prompt("Precio:"));
-    const imagen = prompt("URL de imagen:");
+    const ref = doc(db, "platillos", id);
+    const snap = await getDoc(ref);
+    const data = snap.data();
 
-    const ingredientes = [];
+    // Cargar datos en inputs
+    editNombre.value = data.nombre;
+    editDescripcion.value = data.descripcion;
+    editPrecio.value = data.precio;
+    editImagen.value = data.imagen;
 
-    let agregarMas = true;
+    modal.style.display = "flex";
+};
 
-    while (agregarMas) {
-        const insumoID = prompt("ID del insumo (ej: arroz):");
-        const cantidad = Number(prompt("Cantidad necesaria:"));
+// ===============================
+// GUARDAR CAMBIOS
+// ===============================
+btnGuardar.addEventListener("click", async () => {
+    const ref = doc(db, "platillos", idEditando);
 
-        ingredientes.push({ insumoID, cantidad });
-
-        agregarMas = confirm("¿Agregar otro ingrediente?");
-    }
-
-    await addDoc(collection(db, "platillos"), {
-        nombre,
-        descripcion,
-        precio,
-        imagen,
-        ingredientes
+    await updateDoc(ref, {
+        nombre: editNombre.value,
+        descripcion: editDescripcion.value,
+        precio: Number(editPrecio.value),
+        imagen: editImagen.value
     });
 
+    modal.style.display = "none";
     cargarPlatillos();
+    alert("Platillo actualizado correctamente");
+});
+
+// ===============================
+// CERRAR MODAL
+// ===============================
+btnCerrar.addEventListener("click", () => {
+    modal.style.display = "none";
 });
 
 // ===============================
@@ -78,30 +98,6 @@ btnAgregar.addEventListener("click", async (e) => {
 // ===============================
 window.eliminarPlatillo = async (id) => {
     await deleteDoc(doc(db, "platillos", id));
-    cargarPlatillos();
-};
-
-// ===============================
-// EDITAR PLATILLO
-// ===============================
-window.editarPlatillo = async (id) => {
-    const ref = doc(db, "platillos", id);
-    const snap = await getDoc(ref);
-    const data = snap.data();
-
-    const nuevoNombre = prompt("Nuevo nombre:", data.nombre);
-    const nuevaDescripcion = prompt("Nueva descripción:", data.descripcion);
-    const nuevoPrecio = Number(prompt("Nuevo precio:", data.precio));
-    const nuevaImagen = prompt("Nueva URL de imagen:", data.imagen);
-
-    await updateDoc(ref, {
-        nombre: nuevoNombre,
-        descripcion: nuevaDescripcion,
-        precio: nuevoPrecio,
-        imagen: nuevaImagen
-    });
-
-    alert("Platillo actualizado");
     cargarPlatillos();
 };
 
