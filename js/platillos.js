@@ -1,79 +1,78 @@
-import { db } from "./firebase.js";
-import {
-  collection,
-  getDocs,
-  addDoc,
-  updateDoc,
-  deleteDoc,
-  doc
-} from "firebase/firestore";
+import { 
+    getCollection, 
+    saveCollection, 
+    addDocLS, 
+    updateDocLS 
+} from "./storage.js";
 
-// Referencia a la colección
-const platillosRef = collection(db, "platillos");
+// ===============================
+// CREAR PLATILLOS POR DEFECTO
+// ===============================
+function inicializarPlatillos() {
+    const existentes = getCollection("platillos");
+
+    if (existentes.length === 0) {
+        const iniciales = [
+            {
+                nombre: "Pizza Margarita",
+                precio: 45,
+                imagen: "img/pizza.jpg"
+            },
+            {
+                nombre: "Hamburguesa Clásica",
+                precio: 35,
+                imagen: "img/hamburguesa.jpg"
+            },
+            {
+                nombre: "Papas Fritas",
+                precio: 15,
+                imagen: "img/papas.jpg"
+            }
+        ];
+
+        iniciales.forEach(p => addDocLS("platillos", p));
+    }
+}
+
+// Ejecutar al cargar
+inicializarPlatillos();
 
 // ===============================
 // OBTENER TODOS LOS PLATILLOS
 // ===============================
-export async function obtenerPlatillos() {
-  try {
-    const snapshot = await getDocs(platillosRef);
-
-    return snapshot.docs.map(d => ({
-      id: d.id,
-      ...d.data()
-    }));
-  } catch (error) {
-    console.error("Error al obtener platillos:", error);
-    return [];
-  }
+export function obtenerPlatillos() {
+    return getCollection("platillos");
 }
 
 // ===============================
 // CREAR PLATILLO
 // ===============================
-export async function crearPlatillo(data) {
-  try {
-    // Validación mínima
+export function crearPlatillo(data) {
     if (!data.nombre || !data.precio) {
-      throw new Error("Faltan datos obligatorios");
+        throw new Error("Faltan datos obligatorios");
     }
 
-    return await addDoc(platillosRef, {
-      ...data,
-      precio: Number(data.precio)
+    return addDocLS("platillos", {
+        ...data,
+        precio: Number(data.precio)
     });
-  } catch (error) {
-    console.error("Error al crear platillo:", error);
-    throw error;
-  }
 }
 
 // ===============================
 // ACTUALIZAR PLATILLO
 // ===============================
-export async function actualizarPlatillo(id, data) {
-  try {
-    const ref = doc(db, "platillos", id);
-
-    return await updateDoc(ref, {
-      ...data,
-      precio: Number(data.precio)
+export function actualizarPlatillo(id, data) {
+    updateDocLS("platillos", id, {
+        ...data,
+        precio: Number(data.precio)
     });
-  } catch (error) {
-    console.error("Error al actualizar platillo:", error);
-    throw error;
-  }
 }
 
 // ===============================
 // ELIMINAR PLATILLO
 // ===============================
-export async function eliminarPlatillo(id) {
-  try {
-    const ref = doc(db, "platillos", id);
-    return await deleteDoc(ref);
-  } catch (error) {
-    console.error("Error al eliminar platillo:", error);
-    throw error;
-  }
+export function eliminarPlatillo(id) {
+    const platillos = getCollection("platillos");
+    const nuevos = platillos.filter(p => p.id !== id);
+    saveCollection("platillos", nuevos);
 }

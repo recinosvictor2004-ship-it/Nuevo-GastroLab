@@ -1,29 +1,7 @@
-async function cargarPlatillos() {
-    const platillos = getCollection("platillos");
-
-    platillos.forEach(p => {
-        lista.innerHTML += `
-            <div class="pedido-card">
-                <img src="${p.imagen}" class="pedido-img">
-                <h3>${p.nombre}</h3>
-                <p>Q ${p.precio}</p>
-
-                <input type="number" min="0" value="0"
-                    onchange="actualizarCantidad('${p.id}', '${p.nombre}', ${p.precio}, this.value)">
-            </div>
-        `;
-    });
-}
-
-
-import {
-    collection,
-    getDocs,
-    addDoc,
-    updateDoc,
-    doc,
-    getDoc
-} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+import { 
+    getCollection, 
+    saveCollection 
+} from "./storage.js";
 
 const lista = document.getElementById("lista-platillos");
 const totalSpan = document.getElementById("total");
@@ -55,25 +33,27 @@ const recetas = {
 // ===============================
 // CARGAR PLATILLOS
 // ===============================
-async function cargarPlatillos() {
-    const snap = await getDocs(collection(db, "platillos"));
+function cargarPlatillos() {
+    const platillos = getCollection("platillos");
+    lista.innerHTML = "";
 
-    snap.forEach(p => {
-        const data = p.data();
-
+    platillos.forEach(p => {
         lista.innerHTML += `
             <div class="pedido-card">
-                <img src="${data.imagen}" class="pedido-img">
-                <h3>${data.nombre}</h3>
-                <p>Q ${data.precio}</p>
+                <img src="${p.imagen}" class="pedido-img">
+                <h3>${p.nombre}</h3>
+                <p>Q ${p.precio}</p>
 
                 <input type="number" min="0" value="0"
-                    onchange="actualizarCantidad('${p.id}', '${data.nombre}', ${data.precio}, this.value)">
+                    onchange="actualizarCantidad('${p.id}', '${p.nombre}', ${p.precio}, this.value)">
             </div>
         `;
     });
 }
 
+// ===============================
+// ACTUALIZAR CANTIDAD
+// ===============================
 function actualizarCantidad(id, nombre, precio, cantidad) {
     cantidad = Number(cantidad);
 
@@ -84,7 +64,7 @@ function actualizarCantidad(id, nombre, precio, cantidad) {
     }
 
     calcularTotal();
-};
+}
 
 // ===============================
 // CALCULAR TOTAL
@@ -97,37 +77,30 @@ function calcularTotal() {
     });
 
     totalSpan.textContent = total;
+    return total;
 }
 
 // ===============================
 // CONFIRMAR PEDIDO
 // ===============================
-btnConfirmar.addEventListener("click", async () => {
+btnConfirmar.addEventListener("click", () => {
     if (Object.keys(carrito).length === 0) {
         alert("No hay platillos seleccionados");
         return;
     }
 
     // VALIDAR INVENTARIO
-    const inventarioSnap = await getDocs(collection(db, "inventario"));
-    let inventario = {};
+    const inventario = getCollection("inventario");
 
-    inventarioSnap.forEach(i => {
-        inventario[i.data().nombre.toLowerCase()] = {
-            id: i.id,
-            cantidad: i.data().cantidad,
-            unidad: i.data().unidad
-        };
-    });
-
-    // Verificar si alcanza el inventario
     for (const item of Object.values(carrito)) {
         const receta = recetas[item.nombre];
 
         for (const ing in receta) {
             const requerido = receta[ing] * item.cantidad;
 
-            if (!inventario[ing] || inventario[ing].cantidad < requerido) {
+            const ingrediente = inventario.find(i => i.nombre.toLowerCase() === ing);
+
+            if (!ingrediente || ingrediente.cantidad < requerido) {
                 alert(`No hay suficiente ${ing} para ${item.nombre}`);
                 return;
             }
@@ -135,51 +108,36 @@ btnConfirmar.addEventListener("click", async () => {
     }
 
     // DESCONTAR INVENTARIO
-    for (const item of Object.values(carrito)) {
-        const receta = recetas[item.nombre];
-
-        for (const ing in receta) {
-            const requerido = receta[ing] * item.cantidad;
-            const inv = inventario[ing];
-
-            await updateDoc(doc(db, "inventario", inv.id), {
-                cantidad: inv.cantidad - requerido
-            });
+    inventario.forEach(i => {
+        for (const item of Object.values(carrito)) {
+            const receta = recetas[item.nombre];
+            if (receta[i.nombre.toLowerCase()]) {
+                i.cantidad -= receta[i.nombre.toLowerCase()] * item.cantidad;
+            }
         }
-    }
+    });
+
+    saveCollection("inventario", inventario);
 
     // GUARDAR PEDIDO
-    const pedido = {
-        fecha: new Date(),
-        items: carrito,
-        total: Number(totalSpan.textContent)
-    };
-
-    await addDoc(collection(db, "pedidos"), pedido);
-    await addDoc(collection(db, "historial"), pedido);
-
-    alert("Pedido realizado con éxito");
-    carrito = {};
-    totalSpan.textContent = 0;
-    lista.innerHTML = "";
-    cargarPlatillos();
-});
-
-cargarPlatillos();
-btnConfirmar.addEventListener("click", () => {
     const pedidos = getCollection("pedidos");
 
     pedidos.push({
         id: crypto.randomUUID(),
         fecha: new Date().toLocaleString(),
         items: carrito,
-        total: calcularTotal(true)
+        total: calcularTotal()
     });
 
     saveCollection("pedidos", pedidos);
 
-    alert("Pedido guardado correctamente");
+    alert("Pedido realizado con éxito");
+
     carrito = {};
+    totalSpan.textContent = 0;
     lista.innerHTML = "";
     cargarPlatillos();
 });
+
+// Ejecutar al cargar
+cargarPlatillos();
