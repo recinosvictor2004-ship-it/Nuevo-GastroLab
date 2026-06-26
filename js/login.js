@@ -1,5 +1,5 @@
 import { auth } from "./firebase.js";
-import { signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import { signInWithEmailAndPassword } from "firebase/auth";
 
 const form = document.getElementById("login-form");
 
@@ -13,7 +13,12 @@ form.addEventListener("submit", async (e) => {
         await signInWithEmailAndPassword(auth, email, password);
         window.location.href = "menu.html";
     } catch (err) {
-        alert("Error al iniciar sesión");
-        console.log(err);
+        console.error("Error al iniciar sesión:", err);
+
+        if (err.code === "auth/invalid-credential") {
+            alert("Correo o contraseña incorrectos");
+        } else {
+            alert("No se pudo iniciar sesión");
+        }
     }
 });
