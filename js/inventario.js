@@ -114,3 +114,16 @@ window.editarInsumo = (id) => {
 
 // Ejecutar al cargar
 cargarInsumos();
+function inicializarInsumos() {
+    if (!localStorage.getItem("inventario")) {
+        const insumosBase = [
+            { id: crypto.randomUUID(), nombre: "Masa", stock: 50, unidad: "kg" },
+            { id: crypto.randomUUID(), nombre: "Queso", stock: 30, unidad: "kg" },
+            { id: crypto.randomUUID(), nombre: "Tomate", stock: 40, unidad: "kg" }
+        ];
+
+        localStorage.setItem("inventario", JSON.stringify(insumosBase));
+    }
+}
+
+inicializarInsumos();
