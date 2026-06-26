@@ -1,4 +1,5 @@
 import { db } from "./firebase.js";
+
 import {
     collection,
     getDocs,
@@ -6,7 +7,7 @@ import {
     updateDoc,
     doc,
     getDoc
-} from "firebase/firestore";
+} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
 const lista = document.getElementById("lista-platillos");
 const totalSpan = document.getElementById("total");
