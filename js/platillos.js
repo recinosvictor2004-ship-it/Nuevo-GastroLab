@@ -55,6 +55,6 @@ function inicializarPlatillos() {
         iniciales.forEach(p => addDocLS("platillos", p));
     } // ← esta cierra el IF
 
-} // ← ESTA es la llave que te faltaba (cierra la función)
+} 
 
 inicializarPlatillos();
