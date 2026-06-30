@@ -1,25 +1,3 @@
-// ===============================
-// VERIFICAR VERSIÓN Y LIMPIAR LOCALSTORAGE
-// ===============================
-
-function verificarVersion() {
-    const versionActual = "3.0"; // Cambia este número cuando actualices tu app
-    const versionGuardada = localStorage.getItem("version");
-
-    if (versionGuardada !== versionActual) {
-        console.warn("Nueva versión detectada. Limpiando LocalStorage...");
-        localStorage.clear();
-        localStorage.setItem("version", versionActual);
-    }
-}
-
-verificarVersion();
-
-
-// ===============================
-// CREAR PLATILLOS POR DEFECTO
-// ===============================
-
 function inicializarPlatillos() {
     const existentes = getCollection("platillos");
 
@@ -27,7 +5,6 @@ function inicializarPlatillos() {
 
         const inventario = getCollection("inventario");
 
-        // Buscar insumos por nombre
         const masa = inventario.find(i => i.nombre.toLowerCase() === "masa");
         const queso = inventario.find(i => i.nombre.toLowerCase() === "queso");
         const tomate = inventario.find(i => i.nombre.toLowerCase() === "tomate");
@@ -76,7 +53,8 @@ function inicializarPlatillos() {
         ];
 
         iniciales.forEach(p => addDocLS("platillos", p));
-    }
+    } // ← esta cierra el IF
 
+} // ← ESTA es la llave que te faltaba (cierra la función)
 
 inicializarPlatillos();
