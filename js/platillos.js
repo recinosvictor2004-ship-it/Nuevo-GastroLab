@@ -57,4 +57,4 @@ function inicializarPlatillos() {
     console.log("Platillos iniciales creados correctamente.");
 }
 
-inicializarPlatillos();
+inicializarPlatillos();}
