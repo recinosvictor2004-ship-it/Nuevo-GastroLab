@@ -3,7 +3,7 @@
 // ===============================
 
 function verificarVersion() {
-    const versionActual = "3.0"; // Cambia este número cuando actualices tu app
+    const versionActual = "3.0"; 
     const versionGuardada = localStorage.getItem("version");
 
     if (versionGuardada !== versionActual) {
