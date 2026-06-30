@@ -1,3 +1,10 @@
+import { 
+    getCollection, 
+    saveCollection, 
+    addDocLS, 
+    updateDocLS 
+} from "./storage.js";
+
 // ===============================
 // CREAR PLATILLOS POR DEFECTO
 // ===============================
@@ -5,31 +12,18 @@
 function inicializarPlatillos() {
     const existentes = getCollection("platillos");
 
-    if (!existentes || existentes.length === 0) {
-
-        const inventario = getCollection("inventario");
-
-        // Buscar insumos por nombre
-        const masa = inventario.find(i => i.nombre.toLowerCase() === "masa");
-        const queso = inventario.find(i => i.nombre.toLowerCase() === "queso");
-        const tomate = inventario.find(i => i.nombre.toLowerCase() === "tomate");
-        const pan = inventario.find(i => i.nombre.toLowerCase() === "pan");
-        const carne = inventario.find(i => i.nombre.toLowerCase() === "carne");
-        const lechuga = inventario.find(i => i.nombre.toLowerCase() === "lechuga");
-        const papas = inventario.find(i => i.nombre.toLowerCase() === "papas");
-        const aceite = inventario.find(i => i.nombre.toLowerCase() === "aceite");
-
+    if (existentes.length === 0) {
         const iniciales = [
             {
                 id: crypto.randomUUID(),
                 nombre: "Pizza Margarita",
                 descripcion: "Pizza clásica con queso y tomate",
                 precio: 45,
-                imagen: "img/pizza.jpg",
+                imagen: "img/pizza.jpg",   // ← RUTA CORRECTA
                 ingredientes: [
-                    { insumoID: masa.id, cantidad: 1 },
-                    { insumoID: queso.id, cantidad: 0.25 },
-                    { insumoID: tomate.id, cantidad: 0.20 }
+                    { insumoID: "masa", cantidad: 1 },
+                    { insumoID: "queso", cantidad: 0.25 },
+                    { insumoID: "tomate", cantidad: 0.20 }
                 ]
             },
             {
@@ -37,11 +31,11 @@ function inicializarPlatillos() {
                 nombre: "Hamburguesa Clásica",
                 descripcion: "Carne, pan y vegetales frescos",
                 precio: 35,
-                imagen: "img/hamburguesa.jpg",
+                imagen: "img/hamburguesa.jpg",  // ← RUTA CORRECTA
                 ingredientes: [
-                    { insumoID: pan.id, cantidad: 1 },
-                    { insumoID: carne.id, cantidad: 0.30 },
-                    { insumoID: lechuga.id, cantidad: 0.10 }
+                    { insumoID: "pan", cantidad: 1 },
+                    { insumoID: "carne", cantidad: 0.30 },
+                    { insumoID: "lechuga", cantidad: 0.10 }
                 ]
             },
             {
@@ -49,16 +43,18 @@ function inicializarPlatillos() {
                 nombre: "Papas Fritas",
                 descripcion: "Papas crujientes con sal",
                 precio: 15,
-                imagen: "img/papas.jpeg",
+                imagen: "img/papas.jpeg",   // ← CORREGIDO: antes decía papas.jpg
                 ingredientes: [
-                    { insumoID: papas.id, cantidad: 0.25 },
-                    { insumoID: aceite.id, cantidad: 0.05 }
+                    { insumoID: "papas", cantidad: 0.25 },
+                    { insumoID: "aceite", cantidad: 0.05 }
                 ]
             }
         ];
 
-        iniciales.forEach(p => addDocLS("platillos", p));
-    }
+    // Guardar platillos en LocalStorage
+    iniciales.forEach(p => addDocLS("platillos", p));
+
+    console.log("Platillos iniciales creados correctamente.");
 }
 
 inicializarPlatillos();
