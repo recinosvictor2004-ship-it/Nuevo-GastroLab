@@ -1,6 +1,29 @@
 // ===============================
-// VARIABLES
+// LIMPIAR LOCALSTORAGE SI ES NUEVA VERSIÓN
 // ===============================
+function verificarVersion() {
+    const versionActual = "3.0"; 
+    const versionGuardada = localStorage.getItem("version");
+
+    if (versionGuardada !== versionActual) {
+        console.warn("Nueva versión detectada. Limpiando LocalStorage...");
+        localStorage.clear();
+        localStorage.setItem("version", versionActual);
+    }
+}
+
+verificarVersion();
+
+// ===============================
+// IMPORTS
+// ===============================
+import { 
+    getCollection, 
+    saveCollection, 
+    addDocLS, 
+    updateDocLS 
+} from "./storage.js";
+
 const grid = document.querySelector(".menu-grid");
 
 // ===============================
