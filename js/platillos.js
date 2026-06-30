@@ -93,7 +93,7 @@ function inicializarPlatillos() {
 
         iniciales.forEach(p => addDocLS("platillos", p));
     }
-}
+
 
 inicializarPlatillos();
 
